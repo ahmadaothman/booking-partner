@@ -58,6 +58,7 @@ class TransportationBookingController extends Controller
                 'id_image'              =>  'no image',
                 'trip_id'               =>  $request->input('trip_id'),
                 'agent_id'              => auth()->id(),
+                'trip_type'             => $request->input('trip_type')
             ];
 
             $booking_id = Booking::insertGetId($booking_data);
