@@ -120,7 +120,7 @@ class TransportationBookingController extends Controller
             return view('transportation.vehicle_success',$data);
         }
 
-        $data['image_server'] = '';
+        $data['image_server'] = 'https://admin.pearltours.com.tr';
         return view('transportation.form',$data);
     }
 
