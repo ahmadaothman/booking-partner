@@ -95,6 +95,15 @@ class TransportationBookingController extends Controller
                 DB::table('booking_vehicles')->insert($vehilcle_data);
                 $vehicles[] = DB::table('vehicle')->where('id',$key)->first();
             }
+            $user = DB::table('users')->where('id',auth()->id())->first();
+            $balance = $user->balance;
+            $total_balance = $balance - $total; 
+            DB::table('users')->where('id',auth()->id())->update(['balance'=>$total_balance]);
+            Db::table('user_balance')->insert([
+                'user_id'   => auth()->id(),
+                'balance'   => $total,
+                'action'    => '-'
+            ]);
 
             $data = array();
             $data['from'] = $request->input('pickup_location');
