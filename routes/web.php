@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\TransportationBookingController;
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TripController;
+
+
+Auth::routes();
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+// Users
+Route::get('/transportation', [TransportationBookingController::class, 'bookingList'])->name('transportation_booking');
+Route::get('/transportation/add', [TransportationBookingController::class, 'bookingForm'])->name('addtransportationBooking');
+Route::post('/transportation/add', [TransportationBookingController::class, 'bookingForm'])->name('addtransportationBooking');
+Route::get('/transportation/edit', [TransportationBookingController::class, 'bookingForm'])->name('edittransportationBooking');
+Route::post('/transportation/edit', [TransportationBookingController::class, 'bookingForm'])->name('edittransportationBooking');
+Route::post('/transportation/remove', [TransportationBookingController::class, 'cancel'])->name('canceltransportationBooking');
+
+
+Route::get('/trips/search/pickup', [TripController::class, 'getPickappLocations'])->name('search_pickup');
+
+Route::get('/trips/search/destination', [TripController::class, 'getDestinations'])->name('searh_destination');
+
+Route::get('/trips/vehicles', [TripController::class, 'getVehicle'])->name('getVehicle');
+Route::post('/trips/total', [TripController::class, 'calculateTotal'])->name('calculateTripTotal');
+
+
+
+
