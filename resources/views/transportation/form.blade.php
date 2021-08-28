@@ -513,8 +513,6 @@
 
 <script type="text/javascript">
 
-
-	
     $('#pickup_location').typeahead({
 
         source: function (query, process) {
