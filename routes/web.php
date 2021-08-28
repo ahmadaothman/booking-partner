@@ -6,6 +6,7 @@ use App\Http\Controllers\TransportationBookingController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\UserController;
 
 
 Auth::routes();
@@ -21,11 +22,12 @@ Route::post('/transportation/remove', [TransportationBookingController::class, '
 
 
 Route::get('/trips/search/pickup', [TripController::class, 'getPickappLocations'])->name('search_pickup');
-
 Route::get('/trips/search/destination', [TripController::class, 'getDestinations'])->name('searh_destination');
 
 Route::get('/trips/vehicles', [TripController::class, 'getVehicle'])->name('getVehicle');
 Route::post('/trips/total', [TripController::class, 'calculateTotal'])->name('calculateTripTotal');
+
+Route::get('/user/balance', [UserController::class, 'index'])->name('user_balance');
 
 
 

@@ -10,13 +10,29 @@ use Illuminate\Support\Facades\Auth;
 
 class TripController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function getPickappLocations(Request $request){
-        $trips = Trip::select('id','from_location')->where('from_location','LIKE','%' . $request->get('query') . '%')->skip(0)->take(15)->get();
+        $trips = Trip::select('id','from_location')
+        ->where('from_location','LIKE','%' . $request->get('query') . '%')
+        ->where('from_location','!=',$request->get('to_location'))
+        ->skip(0)
+        ->take(15)
+        ->get();
         return $trips;
     }
 
     public function getDestinations(Request $request){
-        $trips = Trip::select('id','to_location')->where('to_location','LIKE','%' . $request->get('query') . '%')->skip(0)->take(15)->get();
+        $trips = Trip::select('id','to_location')
+        ->where('to_location','LIKE','%' . $request->get('query') . '%')
+        ->where('to_location','!=',$request->get('from_location'))
+        ->skip(0)
+        ->take(15)
+        ->get();
         return $trips;
     }
 
@@ -31,6 +47,7 @@ class TripController extends Controller
             $trpi_vehicles = DB::table('trip_vehicle_pricing')
             ->join('vehicle','trip_vehicle_pricing.vehicle_id','=','vehicle.id')
             ->where('trip_vehicle_pricing.trip_id',$trip_id)->select('*')
+            ->where('trip_vehicle_pricing.private_price','>',0)
             ->get();
     
             $trpi_vehicles = $trpi_vehicles->toArray();

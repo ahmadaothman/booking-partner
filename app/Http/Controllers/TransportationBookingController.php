@@ -100,9 +100,10 @@ class TransportationBookingController extends Controller
             $total_balance = $balance - $total; 
             DB::table('users')->where('id',auth()->id())->update(['balance'=>$total_balance]);
             Db::table('user_balance')->insert([
-                'user_id'   => auth()->id(),
-                'balance'   => $total,
-                'action'    => '-'
+                'user_id'       => auth()->id(),
+                'balance'       => $total,
+                'description'   => 'Transportation Number ' . $booking_id,
+                'action'        => '-'
             ]);
 
             $data = array();

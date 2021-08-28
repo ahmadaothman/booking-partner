@@ -35,13 +35,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label >Pickup Location :</label>
-                                    <input type="text" name="pickup_location" id="pickup_location" class="form-control" required value="{{ isset($booking_trip->pickup_location) ? $booking_trip->pickup_location :  old('pickup_location') }}">
+                                    <input type="text" name="pickup_location" id="pickup_location" class="form-control" autocomplete="off" required value="{{ isset($booking_trip->pickup_location) ? $booking_trip->pickup_location :  old('pickup_location') }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label >Destination Location :</label>
-                                    <input type="text" name="destination_location" id="destination_location"  class="form-control" required value="{{ isset($booking_trip->destination_location) ? $booking_trip->destination_location :  old('destination_location') }}">
+                                    <input type="text" name="destination_location" id="destination_location"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->destination_location) ? $booking_trip->destination_location :  old('destination_location') }}">
                                 </div>
                             </div>
                         </div>
@@ -389,7 +389,7 @@
                                     html += '<td class="text-center align-middle">'
                                     
                                     if(value.selected){
-                                        html += '<input type="checkbox" style="width: 9vw;height: 9vh;" class="vehicle-check" name="selected_vehicles[]" value="'+value.vehicle_id+'"/>'
+                                        html += '<input type="radio" style="width: 9vw;height: 9vh;" class="vehicle-check" name="selected_vehicles[]" value="'+value.vehicle_id+'"/>'
                                     }
 
                                     html += '</td>'
@@ -410,7 +410,7 @@
                     return true
                 }
             }else if(currentIndex == 1 && priorIndex == 2){
-                var selected_vehicles_count = $('#available_vehicles_tbody input:checkbox:checked').length;
+                var selected_vehicles_count = $('#available_vehicles_tbody input:radio:checked').length;
                 if(selected_vehicles_count <= 0){
                     alert('Please select one vehicle at least!')
                     return false
@@ -520,7 +520,10 @@
         source: function (query, process) {
             return $.getJSON(
                 "{{ route('search_pickup') }}",
-                { query: query },
+                {
+                    query: query,
+                    to_location:  $('#destination_location').val()
+                },
                 function (data) {
                     var newData = [];
 
@@ -541,7 +544,10 @@
         source: function (query, process) {
             return $.getJSON(
                 "{{ route('searh_destination') }}",
-                { query: query },
+                {
+                    query: query,
+                    from_location: $('#pickup_location').val()
+                },
                 function (data) {
                     var newData = [];
 
