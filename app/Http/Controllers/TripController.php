@@ -109,6 +109,7 @@ class TripController extends Controller
     public function calculateTotal(Request $request){
         $total = 0;
         $data = array();
+        
         foreach($request->input('selected_vehicles') as $id){
 
             $trpi_vehicles = DB::table('trip_vehicle_pricing')->where('trip_id',$request->input('trip_id'))->where('vehicle_id',$id)->first();
