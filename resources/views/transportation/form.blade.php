@@ -45,7 +45,14 @@
                                 </div>
                             </div>
                         </div>
-                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label >Note :</label>
+                                    <input type="text" name="one_way_note" id="one_way_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->one_way_note) ? $booking_trip->one_way_note :  old('one_way_note') }}">
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -60,18 +67,40 @@
                                 </div>
                             </div>
                         </div>
-
+                   
+                        <div class="row" id="round_trip_locations"   >
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label >Pickup Location :</label>
+                                    <input type="text" name="round_pickup_location" id="round_pickup_location" class="form-control round-trip" autocomplete="off" required value="{{ isset($booking_trip->round_pickup_location) ? $booking_trip->round_pickup_location :  old('round_pickup_location') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label >Destination Location :</label>
+                                    <input type="text" name="round_destination_location" id="round_destination_location"  class="form-control round-trip" autocomplete="off" required value="{{ isset($booking_trip->round_destination_location) ? $booking_trip->round_destination_location :  old('round_destination_location') }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row round-trip">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label >Note :</label>
+                                    <input type="text" name="round_note" id="round_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->round_note) ? $booking_trip->round_note :  old('round_note') }}">
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label >Pickup Date :</label>
+                                    <label >Booking Date :</label>
                                     <input type="date" name="pickup_date" id="pickup_date" class="form-control " placeholder="Select Date" value="{{ isset($booking_trip->pickup_date) ? $booking_trip->pickup_date :  old('pickup_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group round-trip">
                                     <label for="return_date">Return Date :</label>
-                                    <input type="date" name="return_date" id="return_date" class="form-control " placeholder="Select Date" value="{{ isset($booking_trip->return_date) ? $booking_trip->return_date :  old('return_date') }}">
+                                    <input type="date" name="return_date" id="return_date" class="form-control round-trip" placeholder="Select Date" value="{{ isset($booking_trip->return_date) ? $booking_trip->return_date :  old('return_date') }}">
                                 </div>
                             </div>
 
@@ -131,9 +160,23 @@
                             </div>
                             
                         </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label >Booking Time :</label>
+                                    <input type="text" name="one_way_time" id="pickup_time" class="form-control time-picker-default" placeholder="Select Time" value="{{ isset($booking_trip->one_way_time) ? $booking_trip->one_way_time :  old('one_way_time') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group round-trip">
+                                    <label for="return_date">Return Time :</label>
+                                    <input type="text" name="return_time" id="return_time" class="form-control time-picker-default round-trip" placeholder="Select Time" value="{{ isset($booking_trip->return_time) ? $booking_trip->return_time :  old('return_time') }}">
+                                </div>
+                            </div>
+                        </div>
                     </section>
                     <!-- Step 2 -->
-                    <h5>Available Vehicles</h5>
+                    <h5>One Way Vehicles</h5>
                     <section>
                         <div  id="available_vehicles_loader" class="mb-4">
                             <h4>Loading Data...</h4>
@@ -158,35 +201,74 @@
                             </tbody>
                         </table>
                     </section>
-                    <!-- Step 3 -->
-                    <h5>Personal Info</h5>
+                      <!-- Step 3 -->
+                      <h5 >Round Trip Vehicles</h5>
+                      <section >
+                   
+                         <input type="hidden" name="round_trip_id" id="round_trip_id" class="round-trip"/>
+                          <table class="table table-hover table-bordered table-triped round-trip" id="available_round_trip_vehicles">
+                              <thead>
+                                  <tr>
+                                      <th >Image</th>
+                                      <th>Vehicle</th>
+                                      <th>Description</th>
+                                      <th class="text-center">Max People</th>
+                                      <th class="text-center">Price</th>
+                                      <th class="text-center">Select Vehicle</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="available_round_trip_vehicles_tbody">
+  
+                              </tbody>
+                          </table>
+                      </section>
+                    <!-- Step 4 -->
+                    <h5>Pessengers</h5>
+                    <section>
+                      
+                        <h4>PASSENGERS INFO:</h4>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Last Name</th>
+                                    <th>Nationality</th>
+                                    <th>Sex</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pessengers_tbody">
+                            </tbody>
+                        </table>
+                    </section>
+                    <h5>Contact Info</h5>
                     <section>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>First Name:</label>
-                                    <input type="text" name="firstname" id="firstname" class="form-control personel-info" value="{{ isset($booking->firstname) ? $booking->firstname :  old('firstname') }}"/>
+                                    <input type="text" name="firstname" id="firstname" class="form-control personal-info" value="{{ isset($booking->firstname) ? $booking->firstname :  old('firstname') }}"/>
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Middle Name:</label>
-                                    <input type="text" name="middlename" name="middlename"  class="form-control personel-info" value="{{ isset($booking->middlename) ? $booking->middlename :  old('middlename') }}">
+                                    <input type="text" name="middlename" name="middlename"  class="form-control personal-info" value="{{ isset($booking->middlename) ? $booking->middlename :  old('middlename') }}">
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Last Name:</label>
-                                    <input type="text" name="lastname" name="lastname"  class="form-control personel-info"  value="{{ isset($booking->lastname) ? $booking->lastname :  old('lastname') }}">
+                                    <input type="text" name="lastname" name="lastname"  class="form-control personal-info"  value="{{ isset($booking->lastname) ? $booking->lastname :  old('lastname') }}">
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Date Of Birthday:</label>
-                                    <input type="date" name="date_of_birthday" name="date_of_birthday"  class="form-control  personel-info" value="{{ isset($booking->date_of_birthday) ? $booking->date_of_birthday :  old('date_of_birthday') }}">
+                                    <input type="date" name="date_of_birthday" name="date_of_birthday"  class="form-control  personal-info" value="{{ isset($booking->date_of_birthday) ? $booking->date_of_birthday :  old('date_of_birthday') }}">
                                 </div>
                             </div>
                           
@@ -230,45 +312,47 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Telephone:</label>
-                                    <input type="text" name="telephone" id="telephone"  class="form-control personel-info" value="{{ isset($booking->telephone) ? $booking->telephone :  old('telephone') }}">
+                                    <input type="text" name="telephone" id="telephone"  class="form-control personal-info" value="{{ isset($booking->telephone) ? $booking->telephone :  old('telephone') }}">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                          
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Email:</label>
+                                    <input type="text" name="email" id="email"  class="form-control personal-info" value="{{ isset($booking->email) ? $booking->email :  old('email') }}">
+                                </div>
+                            </div>
+
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Passport Number:</label>
-                                    <input type="text" name="passport_number" id="passport_number"  class="form-control personel-info" value="{{ isset($booking->passport_number) ? $booking->passport_number :  old('passport_number') }}">
+                                    <input type="text" name="passport_number" id="passport_number"  class="form-control personal-info" value="{{ isset($booking->passport_number) ? $booking->passport_number :  old('passport_number') }}">
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group" id="block_trip_number" >
-                                    <label>Trip Number:</label>
-                                    <input type="text" name="trip_number" id="trip_number"  class="form-control" value="{{ isset($booking->trip_number) ? $booking->trip_number :  old('trip_number') }}">
-                                </div>
+
+                           
+                        </div>
+
+                       <div class="row is_airport" id="block_trip_number">
+                        <div class="col-md-6 ">
+                            <div class="form-group"  >
+                                <label>Trip Number:</label>
+                                <input type="text" name="trip_number" id="trip_number"  class="form-control" value="{{ isset($booking->trip_number) ? $booking->trip_number :  old('trip_number') }}">
                             </div>
                         </div>
-                        <h4>PASSENGERS INFO:</h4>
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>First Name</th>
-                                    <th>Middle Name</th>
-                                    <th>Last Name</th>
-                                    <th>Nationality</th>
-                                    <th>Sex</th>
-                                    <th>Passwoprt Number</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pessengers_tbody">
-                            </tbody>
-                        </table>
+                        <div class="col-md-6 ">
+                            <div class="form-group"  >
+                                <label>Arrival Time:</label>
+                                <input type="text" name="arrival_time" id="arrival_time"  class="form-control time-picker-default" value="{{ isset($booking->arrival_time) ? $booking->arrival_time :  old('arrival_time') }}">
+                            </div>
+                        </div>
+                       </div>
                     </section>
-                    <!-- Step 4 -->
+                    <!-- Step 6 -->
                     <h5>Confirm</h5>
                     <section>
-                        <table class="table table-bordered table-hover table-striped">
+                        <table class="table table-bordered table-hover table-striped d-none">
                             <tbody>
                                 <tr>
                                     <td>One Way Total:</td>
@@ -281,6 +365,110 @@
                                 <tr>
                                     <td>Total:</td>
                                     <td id="total"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--Contact Info -->
+                        <table class="table table-sm table-hover table-bordered" id="table_contact_info">
+                            <tbody>
+                                <tr>
+                                    <td colspan="4" id="table_contact_info" class="text-center"><strong>Contact Info</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>First Name:</strong></td>
+                                    <td id="table_first_name"></td>
+                                    <td><strong>Last Name:</strong></td>
+                                    <td id="table_last_name"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Date Of Birthdate:</strong></td>
+                                    <td id="table_date_of_birthday"></td>
+                                    <td><strong>Nationality:</strong></td>
+                                    <td id="table_nationality"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sex:</strong></td>
+                                    <td id="table_sex"></td>
+                                    <td><strong>Address:</strong></td>
+                                    <td id="table_address"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Telephone:</strong></td>
+                                    <td id="table_telephone"></td>
+                                    <td><strong>Email:</strong></td>
+                                    <td id="table_email"></td>
+                                </tr>
+                                <tr id="table_airport_trip_info">
+                                    <td><strong>Trip Number:</strong></td>
+                                    <td id="table_trip_number"></td>
+                                    <td><strong>Arrival Time:</strong></td>
+                                    <td id="table_arrival_time"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--Vehicles And Locations-->
+                        <table class="table table-sm table-hover table-bordered" id="table_locations_and_vehicles">
+                            <tbody>
+                                <tr>
+                                    <td colspan="4" id="Trip_type" class="text-center"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>From:</strong></td>
+                                    <td id="table_one_way_from"></td>
+                                    <td><strong>To:</strong></td>
+                                    <td id="table_one_way_to"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Trip Vehicle:</strong></td>
+                                    <td id="table_trip_vehicle"></td>
+                                    <td><strong>Price:</strong></td>
+                                    <td id="table_vehicle_price"></td>
+                                </tr>
+                                <tr id="table_return_trip_location">
+                                    <td><strong>From:</strong></td>
+                                    <td id="table_return_from"></td>
+                                    <td><strong>To:</strong></td>
+                                    <td id="table_return_to"></td>
+                                </tr>
+                                <tr id="table_return_trip_vehicle_row">
+                                    <td><strong>Trip Vehicle:</strong></td>
+                                    <td id="table_return_trip_vehicle"></td>
+                                    <td><strong>Price:</strong></td>
+                                    <td id="table_return_vehicle_price"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--Pesengers-->
+                        <table class="table table-sm table-hover table-bordered" id="table_pessengers">
+                            <thead>
+                                <tr>
+                                    <td>First Name</td>
+                                    <td>Middle Name</td>
+                                    <td>Last Name</td>
+                                    <td>Nationality</td>
+                                    <td>Sex</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table_pessengers_tbody">
+                            </tbody>
+                        </table>
+
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <td colspan="3"></td>
+                                    <td><strong>One Way Price:</strong></td>
+                                    <td id="table_one_way_price" class="text-right"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"></td>
+                                    <td><strong>Return Trip Price:</strong></td>
+                                    <td id="table_return_trip_price" class="text-right"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"></td>
+                                    <td><strong>Total:</strong></td>
+                                    <td id="table_total" class="text-right"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -322,8 +510,9 @@
             finish: "Submit"
         },
         onStepChanging:function(event, currentIndex, priorIndex){
-           
+
             if(currentIndex == 0){
+            
                 if($('#pickup_location').val() == "" || $('#destination_location').val() == "" || $('#pickup_date').val() == ""){
 
                     $('#pickup_location').addClass('is-invalid')
@@ -331,20 +520,23 @@
                     $('#pickup_date').addClass('is-invalid')
 
                     return false;
-                }else if($('input[name="trip_type"]').val() == "round" && $('#return_date').val() == ""){
-                    $('#return_date').addClass('is-invalid')
-
+                }else if($('input[type=radio][name=trip_type]:checked','#main_form').val() == "round" && ( $('#return_date').val() == "" || $('#round_pickup_location').val() == "" || $('#round_destination_location').val() == "" )){
+                    $('.round-trip').addClass('is-invalid')
                     return false;
                 }else{
                     $('input').removeClass('is-invalid')
                     $('#available_vehicles_loader').show()
                     $('#available_vehicles_tbody').empty()
+                    $('#available_round_trip_vehicles_tbody').empty()
+                    
                     $.ajax({
                         url:"{{ route('getVehicle') }}",
                         type:"GET",
                         data:{
                             from_location: $('#pickup_location').val(),
                             to_location:$('#destination_location').val(),
+                            round_from_location: $('#round_pickup_location').val(),
+                            round_to_location:$('#round_destination_location').val(),
                             perssengers:$('#perssengers').val()
                         },
                         success:function(data){
@@ -352,8 +544,6 @@
                             $('#trip_id').val(data.trip_id)
                             if(data.is_airport){
                                 is_airport = true
-                            }else{
-                                is_airport = false
                             }
                           
                             if(data.vehicles.length > 0){
@@ -405,6 +595,67 @@
                                 $('#available_vehicles_tbody').append(html)
                                 $('#available_vehicles_loader').hide()
                             }
+
+                            if(data.return_vehicles.length > 0){
+                                $('#round_trip_id').val(data.return_trip_id)
+
+                                if(data.return_is_airport){
+                                    is_airport = true
+                                }
+
+                                var html = ''
+
+                                $.each(data.vehicles,function(key,value){
+
+                                   if(value.selected){
+                                    html += '<tr>'
+                                   }else{
+                                    html += '<tr class="bg-light">'
+                                   }
+                                    html += '<td>'
+                                    html += '<img class="vehicle-img" src="{{ $image_server }}/'+value.image+'"/>'
+                                    html += '</td>'
+
+                                    html += '<td class="align-middle">'
+                                    html += value.name
+                                    html += '</td>'
+
+                                    html += '<td class="align-middle">'
+                                    html += value.description
+                                    html += '</td>'
+
+                                    html += '<td class="text-center align-middle">'
+                                    html += value.max_people
+                                    html += '</td>'
+
+                                    html += '<td class="text-center align-middle">'
+                                    html += value.private_price + "$"
+                                    html += '<input type="hidden" name="return_vehivles_price['+value.vehicle_id+'][price]" value="'+value.private_price+'" />'
+                                    html += '</td>'
+
+                                    html += '<td class="text-center align-middle">'
+                                    
+                                    if(value.selected){
+                                        html += '<input type="radio" style="width: 9vw;height: 9vh;" class="vehicle-check" name="selected_return_vehicles[]" value="'+value.vehicle_id+'"/>'
+                                    }
+
+                                    html += '</td>'
+
+                                    html += '</tr>'
+
+                                  
+                                })
+                                $('#available_round_trip_vehicles_tbody').append(html)
+                            }else{
+                                html = '<tr><td colspan="5"><strong>No vehicles available for selected locations!</strong></td></tr>'
+                                $('#available_round_trip_vehicles_tbody').append(html)
+                            }
+
+                            if(is_airport){
+                                $('.is_airport').show()
+                            }else{
+                                $('.is_airport').hide()
+                            }
                         }
                     })
                     return true
@@ -418,16 +669,16 @@
                     $('#pessengers_tbody').empty()
                     var pessensgers_number = parseInt($('#perssengers').val())
                     var html = '';
-                    for (let i = 1; i < pessensgers_number; i++) {
+                    for (let i = 0; i < pessensgers_number; i++) {
                         html += '<tr>'
                         html += '<td>'
-                        html += '<input type="text" name="pessenger['+i+'][firstname]" class="form-control personel-info" />'
+                        html += '<input type="text" name="pessenger['+i+'][firstname]" class="form-control pessengers-info" />'
                         html += '</td>'
                         html += '<td>'
-                        html += '<input type="text" name="pessenger['+i+'][middlename]" class="form-control personel-info" />'
+                        html += '<input type="text" name="pessenger['+i+'][middlename]" class="form-control pessengers-info" />'
                         html += '</td>'
                         html += '<td>'
-                        html += '<input type="text" name="pessenger['+i+'][lastname]" class="form-control personel-info" />'
+                        html += '<input type="text" name="pessenger['+i+'][lastname]" class="form-control pessengers-info" />'
                         html += '</td>'
                         html += '<td>'
                         html += '<select class="form-control " name="pessenger['+i+'][nationality]">'
@@ -447,52 +698,118 @@
                         html += '</select>'
                         html += '</td>'
                        
-                        html += '<td>'
-                        html += '<input type="text" name="pessenger['+i+'][passport_number]" class="form-control personel-info" />'
-                        html += '</td>'
+                      
                         html += '</tr>'
                     }
                     $('#pessengers_tbody').append(html)
                     if(is_airport){
                         $('#block_trip_number').show()
-                        $('#trip_number').addClass('personel-info')
+                        $('#trip_number').addClass('personal-info')
                     }else{
                         $('#block_trip_number').hide()
-                        $('#trip_number').removeClass('personel-info')
+                        $('#trip_number').removeClass('personal-info')
                     }
-                    $('#main_form .personel-info').each(function(){
+                    $('#main_form .personal-info').each(function(){
                         $(this).removeClass('is-invalid')
                        
                     })
                     return true
                 }
-            }else if(currentIndex == 2 && priorIndex == 3){
+            }else if(currentIndex == 2 && priorIndex == 3  && $('input[type=radio][name=trip_type]:checked','#main_form').val() == "round"){
+                var selected_vehicles_count = $('#available_round_trip_vehicles_tbody input:radio:checked').length;
+                if(selected_vehicles_count <= 0){
+                    alert('Please select one vehicle at least!')
+                    return false
+                }else{
+                    return true
+                }
+            }else if(currentIndex == 3 && priorIndex == 4){
                 var completed_fields = true
 
-                $('#main_form .personel-info').each(function(){
+                $('#main_form .pessengers-info').each(function(){
                         $(this).removeClass('is-invalid')
                        
                 })
 
-                $('#main_form .personel-info').each(function(){
+                $('#main_form .pessengers-info').each(function(){
                     if($(this).val() == ""){
                         $(this).addClass('is-invalid')
                         completed_fields = false
                     }
                 })
+          
+                return completed_fields
+            }else if(currentIndex == 4 && priorIndex == 5){
+                var completed_fields = true
+
+                $('#main_form .personal-info').each(function(){
+                        $(this).removeClass('is-invalid')
+                    
+                })
+
+                $('#main_form .personal-info').each(function(){
+                    if($(this).val() == ""){
+                        $(this).addClass('is-invalid')
+                        completed_fields = false
+                    }
+                })
+                $('#table_first_name').html($('#firstname').val());
+                $('#table_last_name').html($('input[name="lastname"]').val());
+                $('#table_date_of_birthday').html($('input[name="date_of_birthday"]').val());
+                $('#table_nationality').html($('select[name="nationality"]').val());
+                $('#table_sex').html($('select[name="sex"]').val());
+                $('#table_address').html($('input[name="address"]').val());
+                $('#table_telephone').html($('#telephone').val());
+                $('#table_email').html($('#email').val());
+             
+                if(!is_airport){
+                    $('#table_airport_trip_info').hide()
+                }
+
+                $('#table_trip_number').html($('#trip_number').val());
+                $('#table_arrival_time').html($('#arrival_time').val());
+                if($('input[type=radio][name=trip_type]:checked','#main_form').val() == "round"){
+                    $('#Trip_type').html('<strong>Round Trip</strong>')
+                    $('#table_return_trip_location').show();
+                    $('#table_return_trip_vehicle_row').show();
+                }else{
+                    $('#Trip_type').html('<strong>One Way Trip</strong>')
+                    $('#table_return_trip_location').hide();
+                    $('#table_return_trip_vehicle_row').hide();
+                }
+                $('#table_one_way_from').html($('#pickup_location').val());
+                $('#table_one_way_to').html($('#destination_location').val());
+
+                $('#table_return_from').html($('#round_pickup_location').val());
+                $('#table_return_to').html($('#round_destination_location').val());
                 // calculate total
                 $.ajax({
                     type:"POST",
                     url:"{{ route('calculateTripTotal') }}",
                     data:$('#main_form').serialize(),
                     success:function(results){
-                        $('#one_way_total').html(results.totals.one_way + '$')
-                        if(results.totals.round_trip){
-                            $('#round_trip_total').html(results.totals.round_trip + '$')
-                        }else{
-                            $('#round_trip_total').html('0$')
+                        $('#table_trip_vehicle').html(results.one_way_vehicle.name + "-" + results.one_way_vehicle.description)
+                        $('#table_vehicle_price').html(results.one_way_vehicle_price.private_price + "$" )
+
+                        if(results.return_trip_vehicle){
+                            $('#table_return_trip_vehicle').html(results.return_trip_vehicle.name + "-" + results.return_trip_vehicle.description)
+                            $('#table_return_vehicle_price').html(results.return_trip_vehicle_price.private_price + "$" )
                         }
-                        $('#total').html(results.totals.total + '$')
+                        $('#table_pessengers_tbody').empty()
+                        $.each(results.pessengers,function(k,v){
+                            var html = '<tr>'
+                                html += '<td>'+v.firstname+'</td>'
+                                html += '<td>'+v.middlename+'</td>'
+                                html += '<td>'+v.lastname+'</td>'
+                                html += '<td>'+v.nationality+'</td>'
+                                html += '<td>'+v.sex+'</td>'
+                                html += '</tr>'
+                                $('#table_pessengers_tbody').append(html)
+                        });
+
+                        $('#table_one_way_price').html(results.one_way_price + "$")
+                        $('#table_return_trip_price').html(results.return_trip + "$")
+                        $('#table_total').html(results.total + "$")
                     }
                 })
                 return completed_fields
@@ -502,7 +819,13 @@
         },
         onStepChanged: function (event, currentIndex, priorIndex) {
           
+           
             $('.steps .current').prevAll().addClass('disabled');
+            if((currentIndex == 2 && priorIndex == 1 ) && $('input[type=radio][name=trip_type]:checked','#main_form').val() != "round"){
+                $(this).steps("next");
+            }else if((currentIndex == 2 && priorIndex == 3) && $('input[type=radio][name=trip_type]:checked','#main_form').val() != "round"){
+                $(this).steps("previous");
+            }
         },
         onFinished: function (event, currentIndex) {
             $('#success-modal').modal('show');
@@ -561,16 +884,68 @@
 
     });
 
+    $('#round_pickup_location').typeahead({
+
+        source: function (query, process) {
+            return $.getJSON(
+                "{{ route('search_pickup') }}",
+                {
+                    query: query,
+                    to_location:  $('#round_destination_location').val()
+                },
+                function (data) {
+                    var newData = [];
+
+                    $.each(data, function(){
+
+                        newData.push(this.from_location);
+
+                    });
+
+                    return process(newData);
+                });
+        }
+
+    });
+
+    $('#round_destination_location').typeahead({
+
+        source: function (query, process) {
+            return $.getJSON(
+                "{{ route('searh_destination') }}",
+                {
+                    query: query,
+                    from_location: $('#round_pickup_location').val()
+                },
+                function (data) {
+                    var newData = [];
+
+                    $.each(data, function(){
+
+                        newData.push(this.to_location);
+
+                    });
+
+                    return process(newData);
+                });
+        }
+
+    });
+
 
 	$('.round-trip').hide()
+    $('#round_trip_locations').hide()
+
 	$('input[type=radio][name=trip_type]').change(function() {
 		if (this.value == 'round') {
 			$('.round-trip').show()
+            $('#round_trip_locations').show()
 			$(".round-trip").prop('required',true);
 
 		}
 		else if (this.value == 'one_way') {
 			$('.round-trip').hide()
+            $('#round_trip_locations').hide()
 			$(".round-trip").prop('required',false);
 		}
 	});

@@ -39,7 +39,41 @@ class TripController extends Controller
     public function getVehicle(Request $request){
         $data = array();
 
+        // one way trip
         $trip = Trip::where('from_location',$request->get('from_location'))->where('to_location',$request->get('to_location'))->first();
+       
+        if($trip){
+            $trip_id = $trip->id;
+        
+            $trpi_vehicles = DB::table('trip_vehicle_pricing')
+            ->join('vehicle','trip_vehicle_pricing.vehicle_id','=','vehicle.id')
+            ->where('trip_vehicle_pricing.trip_id',$trip_id)->select('*')
+            ->where('trip_vehicle_pricing.private_price','>',0)
+            ->get();
+    
+            $trpi_vehicles = $trpi_vehicles->toArray();
+    
+    
+            $found_vehicle = false;
+    
+            foreach($trpi_vehicles as $key => $value){
+                if($value->max_people >= $request->get('perssengers') ){
+                    $trpi_vehicles[$key]->selected = true;
+                }else{
+                    $trpi_vehicles[$key]->selected = false;
+                }
+            }
+
+            $data['trip_id'] = $trip->id;
+            $data['is_airport'] = $trip->is_airport;
+            $data['vehicles'] = $trpi_vehicles;
+           
+        }
+
+        // return trip
+        $trip = Trip::where('from_location',$request->get('round_from_location'))
+        ->where('to_location',$request->get('round_to_location'))
+        ->first();
 
         if($trip){
             $trip_id = $trip->id;
@@ -62,36 +96,46 @@ class TripController extends Controller
                     $trpi_vehicles[$key]->selected = false;
                 }
             }
-            $data = array();
-            $data['trip_id'] = $trip->id;
-            $data['is_airport'] = $trip->is_airport;
-            $data['vehicles'] = $trpi_vehicles;
-            return $data;
-        }else{
-            return array();
+
+            $data['return_trip_id'] = $trip->id;
+            $data['return_is_airport'] = $trip->is_airport;
+            $data['return_vehicles'] = $trpi_vehicles;
         }
        
-        /*$data['trip_vehicles'] = $trpi_vehicles;
-
-
-        return view('vehicles',$data);*/
+        
+        return $data;
     }
 
     public function calculateTotal(Request $request){
         $total = 0;
+        $data = array();
         foreach($request->input('selected_vehicles') as $id){
 
             $trpi_vehicles = DB::table('trip_vehicle_pricing')->where('trip_id',$request->input('trip_id'))->where('vehicle_id',$id)->first();
+            $data['one_way_vehicle'] = DB::table('vehicle')->where('id',$trpi_vehicles->vehicle_id)->first();
+            $data['one_way_vehicle_price'] = $trpi_vehicles;
+            
+            $data['one_way_price'] = $trpi_vehicles->private_price;
             $total = $total + $trpi_vehicles->private_price;
         }
-        $data = array();
-        $data['totals']['one_way'] = $total;
-        $data['totals']['round_trip'] = false;
-        if($request->input('trip_type') != 'one_way'){
-            $data['totals']['round_trip'] = $total;
-            $total = $total*2;
+
+        if($request->input('selected_return_vehicles')){
+            foreach($request->input('selected_return_vehicles') as $id){
+
+                $trpi_vehicles = DB::table('trip_vehicle_pricing')->where('trip_id',$request->input('round_trip_id'))->where('vehicle_id',$id)->first();
+                $data['return_trip_vehicle'] = DB::table('vehicle')->where('id',$trpi_vehicles->vehicle_id)->first();$data['return_trip_vehicle_price'] = $trpi_vehicles;
+                
+                $data['return_trip_vehicle_price'] = $trpi_vehicles;
+                $data['return_trip'] = $trpi_vehicles->private_price;
+                $total = $total + $trpi_vehicles->private_price;
+            }
         }
-        $data['totals']['total']  = $total;
+
+        $data['pessengers'] = $request->input('pessenger');
+
+        $data['total'] = $total;
+
+
         return $data;
     }
 }
