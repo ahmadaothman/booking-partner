@@ -1,7 +1,7 @@
 <div class="left-side-bar">
     <div class="brand-logo">
         <a href="{{ url('/') }}">
-            <h4 class="text-dark">Pearl Booking</h4>
+            <img style="max-height:70px" src="{{ asset('/images/logo.png') }}" alt="">
         </a>
     </div>
   
