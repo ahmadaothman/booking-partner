@@ -175,8 +175,12 @@ class TransportationBookingController extends Controller
             $data['one_way_vehicle_price'] = $vehicles['one_way']['price'];
             $data['one_way_vehicle'] = $vehicles['one_way']['vehicle']->name . " " . $vehicles['one_way']['vehicle']->name . " - " . $vehicles['one_way']['vehicle']->max_people . " people";
 
-            $data['round_vehicle_price'] = $vehicles['return']['price'];
-            $data['round_vehicle'] = $vehicles['return']['vehicle']->name . " " . $vehicles['return']['vehicle']->name . " - " . $vehicles['return']['vehicle']->max_people . " people";
+            $data['round_vehicle_price'] = isset($vehicles['return']['price']) ? $vehicles['return']['price'] : '' ;
+            if(isset($vehicles['return'])){
+                $data['round_vehicle'] = $vehicles['return']['vehicle']->name . " " . $vehicles['return']['vehicle']->name . " - " . $vehicles['return']['vehicle']->max_people . " people";
+            }else{
+                $data['round_vehicle'] = '';
+            }
 
             return view('transportation.vehicle_success',$data);
         }
