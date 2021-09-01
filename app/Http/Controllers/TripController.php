@@ -120,23 +120,17 @@ class TripController extends Controller
             $total = $total + $trpi_vehicles->private_price;
         }
 
-        if($request->input('selected_return_vehicles')){
-            foreach($request->input('selected_return_vehicles') as $id){
-
-                $trpi_vehicles = DB::table('trip_vehicle_pricing')->where('trip_id',$request->input('round_trip_id'))->where('vehicle_id',$id)->first();
-                $data['return_trip_vehicle'] = DB::table('vehicle')->where('id',$trpi_vehicles->vehicle_id)->first();$data['return_trip_vehicle_price'] = $trpi_vehicles;
-                
-                $data['return_trip_vehicle_price'] = $trpi_vehicles;
-                $data['return_trip'] = $trpi_vehicles->private_price;
-                $total = $total + $trpi_vehicles->private_price;
-            }
-        }
+       
 
         $data['pessengers'] = $request->input('pessenger');
 
-        $data['total'] = $total;
+       
 
-
+        if($request->input('trip_type') == "one_way"){
+            $data['total'] = $total;
+        }else{
+            $data['total'] = $total*2;
+        }
         return $data;
     }
 }

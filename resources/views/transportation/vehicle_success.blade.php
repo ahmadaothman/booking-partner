@@ -1,9 +1,9 @@
 @extends('index')
 @section('content')
 <div class="pd-ltr-20 xs-pd-20-10 bg-white">
-    <div class="min-height-200px pb-4">
+    <div class="min-height-200px pb-4" style="background-color: white !important">
 
-     
+        @if (isset($view) && !$view)
         <table class="table table-bordered mb-4 borderless">
             <tbody>
                 <tr>
@@ -11,15 +11,17 @@
                 </tr>
             </tbody>
         </table>
-        <div id="toprint" >
+        @endif
+        <script type="text/javascript" src="{{ asset('/src/scripts/printThis.js') }}"></script>
+       <div class="row">
+           <div  class="col-md-12 text-right">
+            <button type="button" class="btn btn-primary" onclick="$('#toprint').printThis();"><i class="icon-copy fa fa-print" aria-hidden="true"></i> Print</button>
+           </div>
+       </div>
+        <div id="toprint" style="background-color: white !important">
             <table class="table table-sm mb-4 mt-2 table-bordered borderless">
                 <tbody>
-                    <tr>
-                        <td class="p-3"><img style="max-height:70px" src="{{ asset('/images/logo.png') }}" alt=""></td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-right align-middle p-3">Transportation Booking</td>
-                    </tr>
+                   
                     <tr>
                         <td class="text-center align-middle" colspan="4"><strong>
                             
@@ -43,10 +45,9 @@
                         <td colspan="4"><strong>Contact:Info</strong></td>
                     </tr>
                     <tr>
-                        <td>{{ $booking_data['firstname'] }} {{ $booking_data['middlename'] }} {{ $booking_data['lastname'] }}</td>
+                        <td>{{ $booking_data['firstname'] }} </td>
                         <td><span>Address: </span> {{ $booking_data['address'] }} </td>
                         <td><span>D.O.B: </span> {{ $booking_data['date_of_birthday'] }} </td>
-                        <td><span>Sex: </span> {{ $booking_data['sex'] }} </td>
                     </tr>
                     <tr>
                         <td>{{ $booking_data['nationality'] }} -  {{ $booking_data['telephone'] }} </td>
@@ -74,6 +75,22 @@
                         <td>Time:</td>
                         <td>{{ $pickup_time }}</td>
                     </tr>
+                    <tr>
+                        <td>
+                            Pickup Note:
+                        </td>
+                        <td colspan="3">
+                            {{ $booking_data['one_way_pickup_note'] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Dropoff Note:
+                        </td>
+                        <td colspan="3">
+                            {{ $booking_data['one_way_dropoff_note'] }}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             @if($booking_data['trip_type'] != 'one_way')
@@ -94,6 +111,22 @@
                             <td>Time:</td>
                             <td>{{ $return_time }}</td>
                         </tr>
+                        <tr>
+                            <td>
+                                Pickup Note:
+                            </td>
+                            <td colspan="3">
+                                {{ $booking_data['return_pickup_note'] }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Dropoff Note:
+                            </td>
+                            <td colspan="3">
+                                {{ $booking_data['return_dropoff_note'] }}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             @endif
@@ -101,7 +134,7 @@
             <table class="table table-sm  table-bordered ">
                 <tbody>
                     <tr>
-                        <td class="text-center align-middle" colspan="4"><strong>Trip Vehicle</strong></td>
+                        <td class="text-center align-middle" colspan="4"><strong>Vehicle</strong></td>
                     </tr>
                     <tr>
                         <td>Vehicle:</td>
@@ -113,22 +146,7 @@
                 </tbody>
             </table>
 
-            @if($booking_data['trip_type'] != 'one_way')
-                <table class="table table-sm  table-bordered ">
-                    <tbody>
-                        <tr>
-                            <td class="text-center align-middle" colspan="4"><strong>Return Trip Vehicle</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Vehicle:</td>
-                            <td>{{ $round_vehicle }}</td>
-                            <td>Price:</td>
-                            <td>{{ $round_vehicle_price }}$</td>
-                        </tr>
-                    
-                    </tbody>
-                </table>
-            @endif
+            
             <table class="table table-sm  table-bordered ">
                 <tbody>
                     <tr>
@@ -136,16 +154,10 @@
                     </tr>
                     @foreach ($pessengers as $pessenger)
                         <tr>
-                            <td>First Name:</td>
-                            <td>{{ $pessenger['firstname'] }}</td>
-                            <td>Middle Name:</td>
-                            <td>{{ $pessenger['middlename'] }}</td>
-                            <td>Last Name:</td>
-                            <td>{{ $pessenger['lastname'] }}</td>
-                            <td>Sex:</td>
-                            <td>{{ $pessenger['sex'] }}</td>
+                            <td>Name:</td>
+                            <td>{{ $pessenger->firstname }}</td>
                             <td>Nationality:</td>
-                            <td>{{ $pessenger['nationality'] }}</td>
+                            <td>{{ $pessenger->nationality }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -153,7 +165,7 @@
             <table class="table table-bordered">
                 <tbody>
                     <tr>
-                        <td class="text-center align-middle"><h2>Amount To Paid: {{ $total }}$</h2></td>
+                        <td class="text-center align-middle"><h2>Amount : {{ $total }}$</h2></td>
                     </tr>
                 </tbody>
             </table>

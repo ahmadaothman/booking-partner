@@ -17,7 +17,6 @@
                 </div>
                 <div class="col-md-6 col-sm-12 text-right">
                     <a type="button" class="btn btn-primary " href="{{ route('addtransportationBooking') }}"><i class="icon-copy fi-plus"></i> Book Trips</a>
-                    <button id="sa-warning" type="button" class="btn btn-danger" onclick="remove();"><i class="icon-copy fi-trash"></i> Remove</button>
                 </div>
             </div>
         </div>
@@ -46,6 +45,44 @@
           
                 <div class="card card-body">
                     <div class="row mb-20">
+                        <!--Trip Type-->
+
+                        <div class="col-sm-3">
+                            <label for="filter_name">Trip Type:</label>
+                            <select class="form-control form-control-sm" id="filter_trip_type">
+                                <option value="-1">--none--</option>
+                                @if(app('request')->input('filter_trip_type') == 'one_way')
+                                 <option value="one_way" selected="selected">One Way</option>
+                                @else 
+                                <option value="one_way" ">One Way</option>
+                                @endif
+                                @if(app('request')->input('filter_trip_type') == 'round')
+                                 <option value="round" selected="selected">Round Trip</option>
+                                @else 
+                                <option value="round" ">Round Trip</option>
+                                @endif
+                            </select>
+                        </div>
+          
+                         <!--Filter Desc -->
+                         <div class="col-sm-3">
+                            <label for="filter_city">Filter Description:</label>
+                            <input type="text" id="filter_description" class="form-control form-control-sm" placeholder="Filter Description" value="{{ app('request')->input('filter_description') }}"/>
+                        </div>
+                         <!--Filter Max -->
+                         <div class="col-sm-3">
+                            <label for="filter_city">Filter Max Peape:</label>
+                            <input type="text" id="filter_max_people" class="form-control form-control-sm" placeholder="Filter Max Peape" value="{{ app('request')->input('filter_max_people') }}"/>
+                        </div>
+                        <!--Filter Price -->
+                        <div class="col-sm-3">
+                            <label for="filter_telephone">Filter Price:</label>
+                            <input type="text" id="filter_price" class="form-control form-control-sm" placeholder="Filter Price" value="{{ app('request')->input('filter_price') }}"/>
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="row mb-20">
                         <!--Filter Name-->
 
                         <div class="col-sm-3">
@@ -72,7 +109,7 @@
                         
                     </div>
                     <div class="w-100 text-right ">
-                        <button  type="button" id="btn_filter" class="btn btn-info btn-sm"> 
+                        <button  type="button" id="btn_filter" class="btn btn-info btn-sm" onclick="filter()"> 
                             <i class="icon-copy fa fa-filter" aria-hidden="true"></i> Filters
                         </button>
                     </div>
@@ -80,50 +117,69 @@
             </div>
            @csrf
            <div class="row">
+            <table class="table table-striped  table-hover  data-table-export table-sm " style="font-size:14px">
+                    <thead>
+                        <tr>
+                            <th class="table-plus datatable-nosort">ID</th>
+                            <th class="table-plus datatable-nosort">From</th>
+                            <th class="table-plus datatable-nosort">To</th>
+                            <th class="table-plus datatable-nosort">Trip</th>
+                            <th class="table-plus datatable-nosort">Name</th>
+                            <th class="table-plus datatable-nosort">Telephone</th>
+                            <th class="table-plus datatable-nosort">Booking Date</th>
+                            <th class="table-plus datatable-nosort">Status</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                <tbody>
+                  @foreach ($bookings as $booking)
+                      <tr>
+                          <td class="align-middle">{{ $booking->id }}</td>
+                          <td class="align-middle">{{ $booking->Trip->from_location }}</td>
+                          <td class="align-middle">{{ $booking->Trip->to_location }}</td>
+                          <td class="align-middle">{{ $booking->trip_type }}</td>
+                          <td class="align-middle">{{ $booking->firstname }}</td>
            
+                          <td class="align-middle">{{ $booking->telephone }}</td>
+                          <td class="align-middle">{{ $booking->booking_date }}</td>
+                          <td class="py-3 px-2 text-center align-midlle" style="font-size: 14px !important;">
+                          @if ($booking->status == 1)
+                          <span class="bg-success p-2 text-white rounded">Approved</span>
+                          @elseif($booking->status == 2)
+                          <span class="bg-danger p-2 text-white rounded">Cancelled</span>
+                          @endif
+                          </td>
+                          <td class="align-middle" >
+                            <a href="{{ route('ViewTripBooking',['id' => $booking['id']]) }}" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye" aria-hidden="true"></i> </a>
+                          </td>
+                      </tr>
+                  @endforeach
+                </tbody>
+             
+            </table>
             <div class="w-100" >
-                   
                
+                {{ $bookings->appends($_GET)->links('vendor.pagination.default') }}
+                <div class="float-right h-100" style="padding-top: 25px">
+                    <strong>
+                        Showing {{ $bookings->count() }} From {{ $bookings->total() }} Trips
+                    </strong>
+                </div>
 
             </div>
-           </div>
+        </div>
         </form>
     </div>
 </div>
 <script type="text/javascript">
-    $('#select-all').click(function(event) {   
-        if(this.checked) {
-            // Iterate each checkbox
-            $(':checkbox').each(function() {
-                this.checked = true;                        
-            });
-        } else {
-            $(':checkbox').each(function() {
-                this.checked = false;                       
-            });
-        }
-    });
-
-    function remove(){
-    
-        swal({
-            title: "Are you sure?",
-            text: "Your will not be able to recover deleted trips!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            confirmButtonText: "Yes",
-            closeOnConfirm: false
-        },
-        function(confirn){
-            
-        }).then(function (isConfirm) {
-            if(isConfirm.value){
-                document.getElementById('from').submit();
-            }
-            //success method
-            },function(){
-        });
+  function filter(){
+    var url = '';
+    if($('#filter_trip_type').val() != "-1"){
+        url += '&filter_trip_type=' + $('#filter_trip_type').val();
     }
+    location.href = "{{ route('transportation_booking',) }}/?" + url
+
+  }
 </script>
 @endsection

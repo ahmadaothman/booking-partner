@@ -51,8 +51,12 @@
                                 <td class="align-middle">
                                     {{ $balance->description }}
                                 </td>
-                                <td class="align-middle">
-                                    {{ $balance->balance }}
+                                @if($balance->action == '+')
+                                <td class="align-middle text-success">
+                                @else
+                                <td class="align-middle text-danger">
+                                @endif
+                                    <strong>{{ $balance->action }}{{ $balance->balance }}</strong>
                                 </td>
 
                                 @if($balance->action == '+')

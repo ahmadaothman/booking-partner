@@ -19,6 +19,7 @@ Route::post('/transportation/add', [TransportationBookingController::class, 'boo
 Route::get('/transportation/edit', [TransportationBookingController::class, 'bookingForm'])->name('edittransportationBooking');
 Route::post('/transportation/edit', [TransportationBookingController::class, 'bookingForm'])->name('edittransportationBooking');
 Route::post('/transportation/remove', [TransportationBookingController::class, 'cancel'])->name('canceltransportationBooking');
+Route::get('/transportation/view', [TransportationBookingController::class, 'viewBooking'])->name('ViewTripBooking');
 
 
 Route::get('/trips/search/pickup', [TripController::class, 'getPickappLocations'])->name('search_pickup');

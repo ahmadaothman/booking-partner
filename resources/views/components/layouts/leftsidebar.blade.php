@@ -9,7 +9,7 @@
         <div class="sidebar-menu">
             <ul id="accordion-menu">
                 <!--Hotels-->
-                <li>
+                <li class="d-none">
                 <a href="/hotels" class="dropdown-toggle no-arrow">
                     <i class="icon-copy fa fa-hotel" aria-hidden="true"></i><span class="mtext">Hotels</span>
                 </a>

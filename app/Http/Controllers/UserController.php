@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index(){
 
         $data = array();
-        $balance = DB::table('user_balance')->where('user_id',auth()->id());
+        $balance = DB::table('user_balance')->where('user_id',auth()->id())->orderBy('id','DESC');
 
         $balance = $balance->paginate(15);
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use PragmaRX\Countries\Package\Countries;
 
 use App\Models\Booking;
+use App\Models\Vehicle;
 use Illuminate\Support\Facades\DB;
 
 class TransportationBookingController extends Controller
@@ -19,8 +20,11 @@ class TransportationBookingController extends Controller
         $data = array();
 
 
-        $bookings =  Booking::where('agent_id',auth()->id())->orderBy('id');
+        $bookings =  Booking::where('agent_id',auth()->id())->orderBy('id','DESC');
 
+        if($request->get('filter_trip_type')){
+            $bookings->where('trip_type',$request->get('filter_trip_type'));
+        }
         $data['bookings'] = $bookings->paginate(15);
 
         return view('transportation.list',$data);
@@ -43,11 +47,11 @@ class TransportationBookingController extends Controller
         if($request->method() == 'POST'){
             $booking_data = [
                 'firstname'             =>  $request->input('firstname'),
-                'middlename'            =>  $request->input('middlename'),
-                'lastname'              =>  $request->input('lastname'),
+                'middlename'            =>  'none',
+                'lastname'              =>  'none',
                 'nationality'           =>  $request->input('nationality'),
                 'address'               =>  !empty($request->input('address')) ? $request->input('address') : 'No Address',
-                'sex'                   =>  $request->input('sex'),
+                'sex'                   =>  'none',
                 'date_of_birthday'      =>  $request->input('date_of_birthday'),
                 'telephone'             =>  $request->input('telephone'),
                 'email'                 =>  $request->input('email'),
@@ -57,10 +61,12 @@ class TransportationBookingController extends Controller
                 'number_of_people'      =>  $request->input('perssengers'),
                 'booking_date'          =>  $request->input('pickup_date'),
                 'one_way_time'          =>  date("G:i", strtotime($request->input('one_way_time'))),
-                'note'                  =>  $request->input('one_way_note'),
+                'one_way_pickup_note'   =>  $request->input('one_way_pickup_note'),
+                'one_way_dropoff_note'  =>  $request->input('one_way_dropoff_note'),
                 'return_date'           =>  $request->input('return_date'),
                 'return_time'           =>  date("G:i", strtotime($request->input('return_time'))),
-                'return_note'           =>  $request->input('round_note'),
+                'return_pickup_note'   =>  $request->input('return_pickup_note'),
+                'return_dropoff_note'  =>  $request->input('return_dropoff_note'),
                 'status'                =>  1,
                 'booking_type'          =>  1,
                 'id_image'              =>  'no image',
@@ -79,10 +85,10 @@ class TransportationBookingController extends Controller
                 foreach($request->input('pessenger') as $key => $pessenger){
                     $pessenger_data = [
                         'firstname'         => $request->input('pessenger')[$key]['firstname'],
-                        'middlename'        => $request->input('pessenger')[$key]['middlename'],
-                        'lastname'          => $request->input('pessenger')[$key]['lastname'],
+                        'middlename'        => 'none',
+                        'lastname'          => 'none',
                         'nationality'       => $request->input('pessenger')[$key]['nationality'],
-                        'sex'               => $request->input('pessenger')[$key]['sex'],
+                        'sex'               => 'none',
                         'passport_number'   => 'none',
                         'booking_id'        => $booking_id
                     ];
@@ -110,25 +116,26 @@ class TransportationBookingController extends Controller
                }
             }
             // return vehicles
-            if($request->input('return_vehivles_price')){
+            if($request->input('vehivles_price') && $request->input('trip_type') != "one_way"){
                
-                foreach($request->input('return_vehivles_price') as $key => $value){
+                foreach($request->input('vehivles_price') as $key => $value){
             
-                    if($key == $request->input('selected_return_vehicles')[0]){
+                    if($key == $request->input('selected_vehicles')[0]){
                         $vehilcle_data = [
                             'vehicle_id'    =>  $key,
-                            'price'         =>  $request->input('return_vehivles_price')[$key]['price'],
+                            'price'         =>  $request->input('vehivles_price')[$key]['price'],
                             'booking_id'    =>  $booking_id,
                             'trip_type'     =>  'return',
                         ];
                         $vehicles['return']['price'] = $vehilcle_data['price'];
                         $vehicles['return']['vehicle'] = DB::table('vehicle')->where('id',$key)->first();
-                        $total = $total + $request->input('return_vehivles_price')[$key]['price'];
+                        $total = $total + $request->input('vehivles_price')[$key]['price'];
                         DB::table('booking_vehicles')->insert($vehilcle_data);
                     }
                     
                 }
             }
+
             // update balance
             $user = DB::table('users')->where('id',auth()->id())->first();
             $balance = $user->balance;
@@ -144,10 +151,8 @@ class TransportationBookingController extends Controller
 
             $data['from'] = $request->input('pickup_location');
             $data['to'] = $request->input('destination_location');
-            $data['note'] = $request->input('one_way_note');
             $data['return_from'] = $request->input('round_pickup_location');
             $data['return_to'] = $request->input('round_destination_location');
-            $data['return_note'] = $request->input('round_note');
             $data['type'] = $request->input('trip_type');
             $data['pickup_date'] = $request->input('pickup_date');
             $data['pickup_time'] = $request->input('one_way_time');
@@ -158,7 +163,7 @@ class TransportationBookingController extends Controller
             $data['middlename'] = $request->input('middlename');
             $data['lastname'] = $request->input('lastname');
             $data['date_of_birthday'] = $request->input('date_of_birthday');
-            $data['sex'] = $request->input('sex');
+            $data['sex'] = 'none';
             $data['nationality'] = $request->input('nationality');
             $data['address'] = $request->input('address');
             $data['telephone'] = $request->input('telephone');
@@ -166,7 +171,7 @@ class TransportationBookingController extends Controller
             $data['passport_number'] = $request->input('passport_number');
             $data['trip_number'] = $request->input('trip_number');
             $data['arrival_time'] = $request->input('arrival_time');
-            $data['pessengers'] = $request->input('pessenger');
+            $data['pessengers'] = DB::table('booking_people')->where('booking_id', $booking_id)->get();
             $data['prices'] = DB::table('booking_vehicles')->where('booking_id',$booking_id)->get();
             $data['vehicles'] = $vehicles;
             $data['total'] = $total;
@@ -191,5 +196,45 @@ class TransportationBookingController extends Controller
 
     public function getTransportaionBooking(Request $request,$booking_id = null){
 
+    }
+
+    public function viewBooking(Request $request){
+        $data = array();
+
+        $booking_data = Booking::where('id',$request->get('id'))
+
+        ->where('agent_id',auth()->id())->first();
+        $data['booking_data'] = $booking_data;
+        $data['booking_number'] = $booking_data->id;
+        $data['from']   = $booking_data->Trip->from_location;
+        $data['to']   = $booking_data->Trip->to_location;
+        $data['pickup_date'] = $booking_data->booking_date;
+        $data['pickup_time'] = $booking_data->one_way_time;
+
+        $data['return_from']   = isset($booking_data->RoundTrip->from_location ) ? $booking_data->RoundTrip->from_location : '';
+        $data['return_to']   = isset($booking_data->RoundTrip->to_location) ? $booking_data->RoundTrip->to_location : '';
+        $data['return_date'] = $booking_data->return_date;
+        $data['return_time'] = $booking_data->return_time;
+
+        $vehicle_price = $booking_data->Vehicle;
+        $return_vehicle_price = $booking_data->ReturnVehicle;
+
+        $vehicle = Vehicle::where('id',$vehicle_price->vehicle_id)->first();
+        
+        if($return_vehicle_price){
+            $return_vehicle = Vehicle::where('id',$return_vehicle_price->vehicle_id)->first();
+          
+            $data['round_vehicle'] = $return_vehicle->name . " - " . $return_vehicle->description . " Max people " . $return_vehicle->max_people;
+            $data['round_vehicle_price'] = $return_vehicle_price->price;
+        }
+
+        $data['one_way_vehicle'] = $vehicle->name . " - " . $vehicle->description . " Max people " . $vehicle->max_people;
+        $data['one_way_vehicle_price'] = $vehicle_price->price;
+        $data['pessengers'] = $booking_data->GetPessengers;
+
+        $data['total'] = $vehicle_price->price + ($return_vehicle_price ? $return_vehicle_price->price : 0);
+        $data['view'] = true;
+
+        return view('transportation.vehicle_success',$data);
     }
 }

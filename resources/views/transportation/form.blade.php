@@ -31,29 +31,7 @@
                     @csrf
                     <h5>Location Info</h5>
                     <section>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label >Pickup Location :</label>
-                                    <input type="text" name="pickup_location" id="pickup_location" class="form-control" autocomplete="off" required value="{{ isset($booking_trip->pickup_location) ? $booking_trip->pickup_location :  old('pickup_location') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label >Destination Location :</label>
-                                    <input type="text" name="destination_location" id="destination_location"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->destination_location) ? $booking_trip->destination_location :  old('destination_location') }}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label >Note :</label>
-                                    <input type="text" name="one_way_note" id="one_way_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->one_way_note) ? $booking_trip->one_way_note :  old('one_way_note') }}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
+                        <div class="row mt-4">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <input type="radio"  id="one_way"  name="trip_type" checked value="one_way" />
@@ -67,7 +45,57 @@
                                 </div>
                             </div>
                         </div>
-                   
+                        <h3 >Trip Details</h3>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label >Pickup Location :</label>
+                                    <input type="text" name="pickup_location" id="pickup_location" class="form-control" autocomplete="off" required value="{{ isset($booking_trip->pickup_location) ? $booking_trip->pickup_location :  old('pickup_location') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label >Drop Off Location :</label>
+                                    <input type="text" name="destination_location" id="destination_location"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->destination_location) ? $booking_trip->destination_location :  old('destination_location') }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="one_way_pickup_note">Pickup Location Note :</label>
+                                    <!--<input type="text" name="one_way_note" id="one_way_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->one_way_note) ? $booking_trip->one_way_note :  old('one_way_note') }}">-->
+                                    <input type="text" name="one_way_pickup_note" id="one_way_pickup_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->one_way_pickup_note) ? $booking_trip->one_way_pickup_note :  old('one_way_pickup_note') }}">
+
+                                </div>
+                                
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="one_way_dropoff_note">Drop Off Location Note :</label>
+                                    <input type="text" name="one_way_dropoff_note" id="one_way_dropoff_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->one_way_dropoff_note) ? $booking_trip->one_way_dropoff_note :  old('one_way_dropoff_note') }}">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label >Booking Date :</label>
+                                    <input type="date" name="pickup_date" id="pickup_date" class="form-control " placeholder="Select Date" value="{{ isset($booking_trip->pickup_date) ? $booking_trip->pickup_date :  old('pickup_date') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label >Booking Time :</label>
+                                    <input type="text" name="one_way_time" id="pickup_time" class="form-control time-picker-default" placeholder="Select Time" value="{{ isset($booking_trip->one_way_time) ? $booking_trip->one_way_time :  old('one_way_time') }}">
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="round-trip">Return Details</h3>
+                        <hr class="round-trip"/>
                         <div class="row" id="round_trip_locations"   >
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -77,33 +105,40 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label >Destination Location :</label>
+                                    <label >Drop Off Location :</label>
                                     <input type="text" name="round_destination_location" id="round_destination_location"  class="form-control round-trip" autocomplete="off" required value="{{ isset($booking_trip->round_destination_location) ? $booking_trip->round_destination_location :  old('round_destination_location') }}">
                                 </div>
                             </div>
                         </div>
                         <div class="row round-trip">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label >Note :</label>
-                                    <input type="text" name="round_note" id="round_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->round_note) ? $booking_trip->round_note :  old('round_note') }}">
+                                    <label >Pickup Location Note :</label>
+                                    <input type="text" name="return_pickup_note" id="return_pickup_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->return_pickup_note) ? $booking_trip->return_pickup_note :  old('return_pickup_note') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label >Drop Off Location Note :</label>
+                                    <input type="text" name="return_dropoff_note" id="return_dropoff_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->return_dropoff_note) ? $booking_trip->return_dropoff_note :  old('return_dropoff_note') }}">
                                 </div>
                             </div>
                         </div>
+                      
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label >Booking Date :</label>
-                                    <input type="date" name="pickup_date" id="pickup_date" class="form-control " placeholder="Select Date" value="{{ isset($booking_trip->pickup_date) ? $booking_trip->pickup_date :  old('pickup_date') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
+                            
+                            <div class="col-md-6">
                                 <div class="form-group round-trip">
                                     <label for="return_date">Return Date :</label>
                                     <input type="date" name="return_date" id="return_date" class="form-control round-trip" placeholder="Select Date" value="{{ isset($booking_trip->return_date) ? $booking_trip->return_date :  old('return_date') }}">
                                 </div>
                             </div>
-
+                            <div class="col-md-6">
+                                <div class="form-group round-trip">
+                                    <label for="return_date">Return Time :</label>
+                                    <input type="text" name="return_time" id="return_time" class="form-control time-picker-default round-trip" placeholder="Select Time" value="{{ isset($booking_trip->return_time) ? $booking_trip->return_time :  old('return_time') }}">
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="perssengers" class="form-label">PASSENGERS</label>
@@ -161,18 +196,8 @@
                             
                         </div>
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label >Booking Time :</label>
-                                    <input type="text" name="one_way_time" id="pickup_time" class="form-control time-picker-default" placeholder="Select Time" value="{{ isset($booking_trip->one_way_time) ? $booking_trip->one_way_time :  old('one_way_time') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group round-trip">
-                                    <label for="return_date">Return Time :</label>
-                                    <input type="text" name="return_time" id="return_time" class="form-control time-picker-default round-trip" placeholder="Select Time" value="{{ isset($booking_trip->return_time) ? $booking_trip->return_time :  old('return_time') }}">
-                                </div>
-                            </div>
+                        
+                          
                         </div>
                     </section>
                     <!-- Step 2 -->
@@ -202,7 +227,7 @@
                         </table>
                     </section>
                       <!-- Step 3 -->
-                      <h5 >Round Trip Vehicles</h5>
+                      <!--h5 >Round Trip Vehicles</h5>
                       <section >
                    
                          <input type="hidden" name="round_trip_id" id="round_trip_id" class="round-trip"/>
@@ -221,7 +246,7 @@
   
                               </tbody>
                           </table>
-                      </section>
+                      </section>-->
                     <!-- Step 4 -->
                     <h5>Pessengers</h5>
                     <section>
@@ -230,11 +255,8 @@
                         <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>First Name</th>
-                                    <th>Middle Name</th>
-                                    <th>Last Name</th>
+                                    <th>Name</th>
                                     <th>Nationality</th>
-                                    <th>Sex</th>
                                 </tr>
                             </thead>
                             <tbody id="pessengers_tbody">
@@ -244,24 +266,24 @@
                     <h5>Contact Info</h5>
                     <section>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-9">
                                 <div class="form-group">
-                                    <label>First Name:</label>
+                                    <label>Full Name:</label>
                                     <input type="text" name="firstname" id="firstname" class="form-control personal-info" value="{{ isset($booking->firstname) ? $booking->firstname :  old('firstname') }}"/>
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 d-none">
                                 <div class="form-group">
                                     <label>Middle Name:</label>
-                                    <input type="text" name="middlename" name="middlename"  class="form-control personal-info" value="{{ isset($booking->middlename) ? $booking->middlename :  old('middlename') }}">
+                                    <input type="text" name="middlename" name="middlename"  class="form-control " value="{{ isset($booking->middlename) ? $booking->middlename :  old('middlename') }}">
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 d-none">
                                 <div class="form-group">
                                     <label>Last Name:</label>
-                                    <input type="text" name="lastname" name="lastname"  class="form-control personal-info"  value="{{ isset($booking->lastname) ? $booking->lastname :  old('lastname') }}">
+                                    <input type="text" name="lastname" name="lastname"  class="form-control "  value="{{ isset($booking->lastname) ? $booking->lastname :  old('lastname') }}">
                                 </div>
                             </div>
 
@@ -274,16 +296,8 @@
                           
                         </div>
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Sex:</label>
-                                    <select class="form-control" name="sex" name="sex" >
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
+                         
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Nationality:</label>
                                     <select class="form-control selectpicker" name="nationality" name="nationality" data-live-search="true">
@@ -375,10 +389,9 @@
                                     <td colspan="4" id="table_contact_info" class="text-center"><strong>Contact Info</strong></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>First Name:</strong></td>
+                                    <td><strong>Name:</strong></td>
                                     <td id="table_first_name"></td>
-                                    <td><strong>Last Name:</strong></td>
-                                    <td id="table_last_name"></td>
+                              
                                 </tr>
                                 <tr>
                                     <td><strong>Date Of Birthdate:</strong></td>
@@ -387,10 +400,9 @@
                                     <td id="table_nationality"></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Sex:</strong></td>
-                                    <td id="table_sex"></td>
-                                    <td><strong>Address:</strong></td>
-                                    <td id="table_address"></td>
+                                   
+                                    <td ><strong>Address:</strong></td>
+                                    <td id="table_address" colspan="3"></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Telephone:</strong></td>
@@ -418,19 +430,20 @@
                                     <td><strong>To:</strong></td>
                                     <td id="table_one_way_to"></td>
                                 </tr>
-                                <tr>
-                                    <td><strong>Trip Vehicle:</strong></td>
-                                    <td id="table_trip_vehicle"></td>
-                                    <td><strong>Price:</strong></td>
-                                    <td id="table_vehicle_price"></td>
-                                </tr>
+                               
                                 <tr id="table_return_trip_location">
                                     <td><strong>From:</strong></td>
                                     <td id="table_return_from"></td>
                                     <td><strong>To:</strong></td>
                                     <td id="table_return_to"></td>
                                 </tr>
-                                <tr id="table_return_trip_vehicle_row">
+                                <tr>
+                                    <td><strong>Trip Vehicle:</strong></td>
+                                    <td id="table_trip_vehicle"></td>
+                                    <td><strong>Price:</strong></td>
+                                    <td id="table_vehicle_price"></td>
+                                </tr>
+                                <tr id="table_return_trip_vehicle_row" class="d-none">
                                     <td><strong>Trip Vehicle:</strong></td>
                                     <td id="table_return_trip_vehicle"></td>
                                     <td><strong>Price:</strong></td>
@@ -442,11 +455,8 @@
                         <table class="table table-sm table-hover table-bordered" id="table_pessengers">
                             <thead>
                                 <tr>
-                                    <td>First Name</td>
-                                    <td>Middle Name</td>
-                                    <td>Last Name</td>
+                                    <td>Full Name</td>
                                     <td>Nationality</td>
-                                    <td>Sex</td>
                                 </tr>
                             </thead>
                             <tbody id="table_pessengers_tbody">
@@ -596,61 +606,6 @@
                                 $('#available_vehicles_loader').hide()
                             }
 
-                            if(data.return_vehicles.length > 0){
-                                $('#round_trip_id').val(data.return_trip_id)
-
-                                if(data.return_is_airport){
-                                    is_airport = true
-                                }
-
-                                var html = ''
-
-                                $.each(data.vehicles,function(key,value){
-
-                                   if(value.selected){
-                                    html += '<tr>'
-                                   }else{
-                                    html += '<tr class="bg-light">'
-                                   }
-                                    html += '<td>'
-                                    html += '<img class="vehicle-img" src="{{ $image_server }}/'+value.image+'"/>'
-                                    html += '</td>'
-
-                                    html += '<td class="align-middle">'
-                                    html += value.name
-                                    html += '</td>'
-
-                                    html += '<td class="align-middle">'
-                                    html += value.description
-                                    html += '</td>'
-
-                                    html += '<td class="text-center align-middle">'
-                                    html += value.max_people
-                                    html += '</td>'
-
-                                    html += '<td class="text-center align-middle">'
-                                    html += value.private_price + "$"
-                                    html += '<input type="hidden" name="return_vehivles_price['+value.vehicle_id+'][price]" value="'+value.private_price+'" />'
-                                    html += '</td>'
-
-                                    html += '<td class="text-center align-middle">'
-                                    
-                                    if(value.selected){
-                                        html += '<input type="radio" style="width: 9vw;height: 9vh;" class="vehicle-check" name="selected_return_vehicles[]" value="'+value.vehicle_id+'"/>'
-                                    }
-
-                                    html += '</td>'
-
-                                    html += '</tr>'
-
-                                  
-                                })
-                                $('#available_round_trip_vehicles_tbody').append(html)
-                            }else{
-                                html = '<tr><td colspan="5"><strong>No vehicles available for selected locations!</strong></td></tr>'
-                                $('#available_round_trip_vehicles_tbody').append(html)
-                            }
-
                             if(is_airport){
                                 $('.is_airport').show()
                             }else{
@@ -674,12 +629,8 @@
                         html += '<td>'
                         html += '<input type="text" name="pessenger['+i+'][firstname]" class="form-control pessengers-info" />'
                         html += '</td>'
-                        html += '<td>'
-                        html += '<input type="text" name="pessenger['+i+'][middlename]" class="form-control pessengers-info" />'
-                        html += '</td>'
-                        html += '<td>'
-                        html += '<input type="text" name="pessenger['+i+'][lastname]" class="form-control pessengers-info" />'
-                        html += '</td>'
+                
+                  
                         html += '<td>'
                         html += '<select class="form-control " name="pessenger['+i+'][nationality]">'
                         '@foreach ($countries as $key => $value)'
@@ -691,12 +642,7 @@
                         '@endforeach'
                         html += '</select>'
                         html += '</td>'
-                        html += '<td>'
-                        html += '<select class="form-control" name="pessenger['+i+'][sex]">'
-                        html += '<option value="male">Male</option>'
-                        html += '<option value="female">Female</option>'
-                        html += '</select>'
-                        html += '</td>'
+                        
                        
                       
                         html += '</tr>'
@@ -715,15 +661,7 @@
                     })
                     return true
                 }
-            }else if(currentIndex == 2 && priorIndex == 3  && $('input[type=radio][name=trip_type]:checked','#main_form').val() == "round"){
-                var selected_vehicles_count = $('#available_round_trip_vehicles_tbody input:radio:checked').length;
-                if(selected_vehicles_count <= 0){
-                    alert('Please select one vehicle at least!')
-                    return false
-                }else{
-                    return true
-                }
-            }else if(currentIndex == 3 && priorIndex == 4){
+            }else if(currentIndex == 2 && priorIndex == 3){
                 var completed_fields = true
 
                 $('#main_form .pessengers-info').each(function(){
@@ -739,7 +677,7 @@
                 })
           
                 return completed_fields
-            }else if(currentIndex == 4 && priorIndex == 5){
+            }else if(currentIndex == 3 && priorIndex == 4){
                 var completed_fields = true
 
                 $('#main_form .personal-info').each(function(){
@@ -754,10 +692,8 @@
                     }
                 })
                 $('#table_first_name').html($('#firstname').val());
-                $('#table_last_name').html($('input[name="lastname"]').val());
                 $('#table_date_of_birthday').html($('input[name="date_of_birthday"]').val());
                 $('#table_nationality').html($('select[name="nationality"]').val());
-                $('#table_sex').html($('select[name="sex"]').val());
                 $('#table_address').html($('input[name="address"]').val());
                 $('#table_telephone').html($('#telephone').val());
                 $('#table_email').html($('#email').val());
@@ -799,16 +735,14 @@
                         $.each(results.pessengers,function(k,v){
                             var html = '<tr>'
                                 html += '<td>'+v.firstname+'</td>'
-                                html += '<td>'+v.middlename+'</td>'
-                                html += '<td>'+v.lastname+'</td>'
+                          
                                 html += '<td>'+v.nationality+'</td>'
-                                html += '<td>'+v.sex+'</td>'
                                 html += '</tr>'
                                 $('#table_pessengers_tbody').append(html)
                         });
 
                         $('#table_one_way_price').html(results.one_way_price + "$")
-                        $('#table_return_trip_price').html(results.return_trip + "$")
+                        $('#table_return_trip_price').html(results.one_way_price + "$")
                         $('#table_total').html(results.total + "$")
                     }
                 })
@@ -820,12 +754,7 @@
         onStepChanged: function (event, currentIndex, priorIndex) {
           
            
-            $('.steps .current').prevAll().addClass('disabled');
-            if((currentIndex == 2 && priorIndex == 1 ) && $('input[type=radio][name=trip_type]:checked','#main_form').val() != "round"){
-                $(this).steps("next");
-            }else if((currentIndex == 2 && priorIndex == 3) && $('input[type=radio][name=trip_type]:checked','#main_form').val() != "round"){
-                $(this).steps("previous");
-            }
+           
         },
         onFinished: function (event, currentIndex) {
             $('#success-modal').modal('show');
