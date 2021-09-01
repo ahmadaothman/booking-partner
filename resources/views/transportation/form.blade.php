@@ -210,6 +210,7 @@
 							</div>
                        </div>
                        <input type="hidden" name="trip_id" id="trip_id" />
+                       <input type="hidden" name="round_trip_id" id="round_trip_id" class="round-trip"/>
                         <table class="table table-hover table-bordered table-triped" id="available_vehicles">
                             <thead>
                                 <tr>
@@ -552,6 +553,7 @@
                         success:function(data){
                             $('#available_vehicles_tbody').empty()
                             $('#trip_id').val(data.trip_id)
+                            $('#round_trip_id').val(data.return_trip_id)
                             if(data.is_airport){
                                 is_airport = true
                             }
