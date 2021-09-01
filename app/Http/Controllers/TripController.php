@@ -22,7 +22,7 @@ class TripController extends Controller
         ->where('from_location','!=',$request->get('to_location'))
         ->skip(0)
         ->take(15)
-        ->get();
+        ->get()->unique('from_location');
         return $trips;
     }
 
@@ -32,7 +32,7 @@ class TripController extends Controller
         ->where('to_location','!=',$request->get('from_location'))
         ->skip(0)
         ->take(15)
-        ->get();
+        ->get()->unique('to_location');
         return $trips;
     }
 
