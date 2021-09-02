@@ -42,18 +42,15 @@
             <table class="table table-sm  table-bordered borderless">
                 <tbody>
                     <tr>
-                        <td colspan="4"><strong>Contact:Info</strong></td>
+                        <td colspan="2"><strong>Contact:Info</strong></td>
                     </tr>
                     <tr>
                         <td>{{ $booking_data['firstname'] }} </td>
-                        <td><span>Address: </span> {{ $booking_data['address'] }} </td>
                         <td><span>D.O.B: </span> {{ $booking_data['date_of_birthday'] }} </td>
                     </tr>
                     <tr>
                         <td>{{ $booking_data['nationality'] }} -  {{ $booking_data['telephone'] }} </td>
                         <td>{{ $booking_data['email'] }} </td>
-                        <td><span>Passport No: </span>{{ $booking_data['passport_number'] }} </td>
-                        <td></td>
                     </tr>
                 </tbody>
             </table>
@@ -77,7 +74,7 @@
                     </tr>
                     <tr>
                         <td>
-                            Pickup Note:
+                            Pickup Location Address:
                         </td>
                         <td colspan="3">
                             {{ $booking_data['one_way_pickup_note'] }}
@@ -85,7 +82,7 @@
                     </tr>
                     <tr>
                         <td>
-                            Dropoff Note:
+                            Dropoff Location Address:
                         </td>
                         <td colspan="3">
                             {{ $booking_data['one_way_dropoff_note'] }}
@@ -113,7 +110,7 @@
                         </tr>
                         <tr>
                             <td>
-                                Pickup Note:
+                                Pickup Location Address:
                             </td>
                             <td colspan="3">
                                 {{ $booking_data['return_pickup_note'] }}
@@ -121,7 +118,7 @@
                         </tr>
                         <tr>
                             <td>
-                                Dropoff Note:
+                                Dropoff Location Address:
                             </td>
                             <td colspan="3">
                                 {{ $booking_data['return_dropoff_note'] }}
@@ -139,8 +136,7 @@
                     <tr>
                         <td>Vehicle:</td>
                         <td>{{ $one_way_vehicle }}</td>
-                        <td>Price:</td>
-                        <td>{{ $one_way_vehicle_price }}$</td>
+                      
                     </tr>
                 
                 </tbody>
@@ -162,7 +158,7 @@
                     @endforeach
                 </tbody>
             </table>
-            <table class="table table-bordered">
+            <table class="table table-bordered d-none">
                 <tbody>
                     <tr>
                         <td class="text-center align-middle"><h2>Amount : {{ $total }}$</h2></td>

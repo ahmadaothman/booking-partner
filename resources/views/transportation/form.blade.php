@@ -258,6 +258,7 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Nationality</th>
+                                    <td>Admin</td>
                                 </tr>
                             </thead>
                             <tbody id="pessengers_tbody">
@@ -318,10 +319,10 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 d-none">
                                 <div class="form-group">
                                     <label>Address:</label>
-                                    <input type="text" name="address" name="address"  class="form-control" value="{{ isset($booking->address) ? $booking->address :  old('address') }}">
+                                    <input type="text" name="address" name="address"  class="form-control" value="none">
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -330,23 +331,20 @@
                                     <input type="text" name="telephone" id="telephone"  class="form-control personal-info" value="{{ isset($booking->telephone) ? $booking->telephone :  old('telephone') }}">
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Email:</label>
                                     <input type="text" name="email" id="email"  class="form-control personal-info" value="{{ isset($booking->email) ? $booking->email :  old('email') }}">
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
+                        </div>
+                        <div class="row d-none">
+                            <div class="col-md-6 d-none">
                                 <div class="form-group">
                                     <label>Passport Number:</label>
-                                    <input type="text" name="passport_number" id="passport_number"  class="form-control personal-info" value="{{ isset($booking->passport_number) ? $booking->passport_number :  old('passport_number') }}">
+                                    <input type="text" name="passport_number" id="passport_number"  class="form-control personal-info" value="000000">
                                 </div>
                             </div>
-
-                           
                         </div>
 
                        <div class="row is_airport" id="block_trip_number">
@@ -400,11 +398,7 @@
                                     <td><strong>Nationality:</strong></td>
                                     <td id="table_nationality"></td>
                                 </tr>
-                                <tr>
-                                   
-                                    <td ><strong>Address:</strong></td>
-                                    <td id="table_address" colspan="3"></td>
-                                </tr>
+                              
                                 <tr>
                                     <td><strong>Telephone:</strong></td>
                                     <td id="table_telephone"></td>
@@ -458,6 +452,7 @@
                                 <tr>
                                     <td>Full Name</td>
                                     <td>Nationality</td>
+                                    
                                 </tr>
                             </thead>
                             <tbody id="table_pessengers_tbody">
@@ -644,7 +639,9 @@
                         '@endforeach'
                         html += '</select>'
                         html += '</td>'
-                        
+                        html += '<td>'
+                        html += '<input type="radio" name="pessenger_admin" id="pessenger_admin_'+i+'" value="'+i+'"/><label for="pessenger_admin_'+i+'"></label>'
+                        html += '</td>'
                        
                       
                         html += '</tr>'
@@ -677,7 +674,15 @@
                         completed_fields = false
                     }
                 })
-          
+                
+                var pessenger_id = $('input[name="pessenger_admin"]:checked','#main_form').val()
+
+                var pessenger_name = $('input[name="pessenger['+pessenger_id+'][firstname]"]').val();
+                var pessenger_country = $('select[name="pessenger['+pessenger_id+'][nationality]"]').val();
+
+
+                $('#firstname').val(pessenger_name)
+                $('select[name="nationality"]').val(pessenger_country).change()
                 return completed_fields
             }else if(currentIndex == 3 && priorIndex == 4){
                 var completed_fields = true
