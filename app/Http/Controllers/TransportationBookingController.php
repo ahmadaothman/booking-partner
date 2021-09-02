@@ -7,6 +7,8 @@ use PragmaRX\Countries\Package\Countries;
 
 use App\Models\Booking;
 use App\Models\Vehicle;
+use App\Models\Setting;
+
 use Illuminate\Support\Facades\DB;
 
 class TransportationBookingController extends Controller
@@ -187,6 +189,11 @@ class TransportationBookingController extends Controller
                 $data['round_vehicle'] = '';
             }
 
+            if( !empty($booking_data['trip_arrival_time'])){
+                $data['airport_port_number'] = Setting::getSetting('airport_port_number') ? Setting::getSetting('airport_port_number')->setting_value : false;
+                $data['airport_banner_number'] = Setting::getSetting('airport_banner_number') ? Setting::getSetting('airport_banner_number')->setting_value : false;    
+            }
+
             return view('transportation.vehicle_success',$data);
         }
       
@@ -234,6 +241,11 @@ class TransportationBookingController extends Controller
 
         $data['total'] = $vehicle_price->price + ($return_vehicle_price ? $return_vehicle_price->price : 0);
         $data['view'] = true;
+
+        if( !empty($booking_data['trip_arrival_time'])){
+            $data['airport_port_number'] = Setting::getSetting('airport_port_number') ? Setting::getSetting('airport_port_number')->setting_value : false;
+            $data['airport_banner_number'] = Setting::getSetting('airport_banner_number') ? Setting::getSetting('airport_banner_number')->setting_value : false;    
+        }
 
         return view('transportation.vehicle_success',$data);
     }

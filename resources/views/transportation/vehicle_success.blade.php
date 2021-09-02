@@ -158,13 +158,15 @@
                     @endforeach
                 </tbody>
             </table>
-            <table class="table table-bordered d-none">
-                <tbody>
-                    <tr>
-                        <td class="text-center align-middle"><h2>Amount : {{ $total }}$</h2></td>
-                    </tr>
-                </tbody>
-            </table>
+            @if(!empty($booking_data['trip_arrival_time']))
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td class="text-center align-middle"><h5>Port: <strong>{{ $airport_port_number }}</strong> Banner: <strong>{{ $airport_banner_number }}</strong> </h5></td>
+                        </tr>
+                    </tbody>
+                </table>
+            @endif
         </div>
     </div>
 </div>
