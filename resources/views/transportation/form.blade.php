@@ -77,7 +77,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="one_way_pickup_note">Pickup Location Note :</label>
+                                    <label for="one_way_pickup_note">Pickup Location Address :</label>
                                     <!--<input type="text" name="one_way_note" id="one_way_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->one_way_note) ? $booking_trip->one_way_note :  old('one_way_note') }}">-->
                                     <input type="text" name="one_way_pickup_note" id="one_way_pickup_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->one_way_pickup_note) ? $booking_trip->one_way_pickup_note :  old('one_way_pickup_note') }}">
 
@@ -86,7 +86,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="one_way_dropoff_note">Drop Off Location Note :</label>
+                                    <label for="one_way_dropoff_note">Drop Off Location Address :</label>
                                     <input type="text" name="one_way_dropoff_note" id="one_way_dropoff_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->one_way_dropoff_note) ? $booking_trip->one_way_dropoff_note :  old('one_way_dropoff_note') }}">
                                 </div>
                             </div>
@@ -95,20 +95,21 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label >Booking Date :</label>
+                                    <label >Pickup Date :</label>
                                     <input type="date" name="pickup_date" id="pickup_date" class="form-control " placeholder="Select Date" value="{{ isset($booking_trip->pickup_date) ? $booking_trip->pickup_date :  old('pickup_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label >Booking Time :</label>
+                                    <label >Pickup Time :</label>
                                     <input type="text" name="one_way_time" id="pickup_time" class="form-control time-picker-default" placeholder="Select Time" value="{{ isset($booking_trip->one_way_time) ? $booking_trip->one_way_time :  old('one_way_time') }}">
                                 </div>
                             </div>
                         </div>
                         <h3 class="round-trip">Return Details</h3>
                         <hr class="round-trip"/>
-                        <div class="row" id="round_trip_locations"   >
+
+                        <div class="row" id="round_trip_locations"   class="d-none" hidden>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label >Pickup Location :</label>
@@ -122,16 +123,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row round-trip">
+
+                        <div class="row  d-none" hidden>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label >Pickup Location Note :</label>
+                                    <label >Pickup Location Address :</label>
                                     <input type="text" name="return_pickup_note" id="return_pickup_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->return_pickup_note) ? $booking_trip->return_pickup_note :  old('return_pickup_note') }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label >Drop Off Location Note :</label>
+                                    <label >Drop Off Location Address :</label>
                                     <input type="text" name="return_dropoff_note" id="return_dropoff_note"  class="form-control" autocomplete="off" required value="{{ isset($booking_trip->return_dropoff_note) ? $booking_trip->return_dropoff_note :  old('return_dropoff_note') }}">
                                 </div>
                             </div>
@@ -213,7 +215,7 @@
                         </div>
                     </section>
                     <!-- Step 2 -->
-                    <h5>One Way Vehicles</h5>
+                    <h5>Vehicles</h5>
                     <section>
                         <div  id="available_vehicles_loader" class="mb-4">
                             <h4>Loading Data...</h4>
@@ -519,6 +521,7 @@
 <script src="{{ asset('/src/plugins/jquery-steps/build/jquery.steps.js') }}"></script>
 <script>
     var is_airport = false
+    var final_total = 0;
     $(".tab-wizard").steps({
         headerTag: "h5",
         bodyTag: "section",
@@ -530,7 +533,8 @@
         onStepChanging:function(event, currentIndex, priorIndex){
 
             if(currentIndex == 0){
-            
+                $('#round_pickup_location').val($('#destination_location').val())
+                $('#round_destination_location').val($('#pickup_location').val())
                 if($('#pickup_location').val() == "" || $('#destination_location').val() == "" || $('#pickup_date').val() == ""){
 
                     $('#pickup_location').addClass('is-invalid')
@@ -539,6 +543,7 @@
 
                     return false;
                 }else if($('input[type=radio][name=trip_type]:checked','#main_form').val() == "round" && ( $('#return_date').val() == "" || $('#round_pickup_location').val() == "" || $('#round_destination_location').val() == "" )){
+
                     $('.round-trip').addClass('is-invalid')
                     return false;
                 }else{
@@ -763,6 +768,7 @@
                         $('#table_one_way_price').html(results.one_way_price + "$")
                         $('#table_return_trip_price').html(results.one_way_price + "$")
                         $('#table_total').html(results.total + "$")
+                        final_total = results.total
                     }
                 })
                 return completed_fields
@@ -776,7 +782,14 @@
            
         },
         onFinished: function (event, currentIndex) {
-            $('#success-modal').modal('show');
+            var balance = {{ $user->balance }}
+
+            if(final_total > balance){
+                alert("Warning: you don't have balance please contact admin!")
+            }else{
+                $('#success-modal').modal('show');
+            }
+            
         }
     });
 </script>
@@ -901,7 +914,24 @@
         dateFormat: 'dd-mm-yyyy'
             });
 </script>
+<script type="text/javascript">
+$("#pickup_location").change(function() {
+    if($(this).val().toLowerCase().indexOf("airport") != -1){
+        $('#one_way_pickup_note').prop("readonly",true);
+    }else{
+        $('#one_way_pickup_note').prop("readonly",false);
+    }
+})
 
+
+$("#destination_location").change( function() {
+    if($(this).val().toLowerCase().indexOf("airport") != -1){
+        $('#one_way_dropoff_note').prop("readonly",true);
+    }else{
+        $('#one_way_dropoff_note').prop("readonly",false);
+    }
+})
+</script>
 <style>
 	
 	.ui-autocomplete {
