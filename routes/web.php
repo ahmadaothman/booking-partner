@@ -7,6 +7,7 @@ use App\Http\Controllers\TransportationBookingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingController;
 
 
 Auth::routes();
@@ -30,6 +31,8 @@ Route::post('/trips/total', [TripController::class, 'calculateTotal'])->name('ca
 
 Route::get('/user/balance', [UserController::class, 'index'])->name('user_balance');
 
+Route::get('/setting', [SettingController::class, 'index'])->name('setting');
+Route::post('/setting', [SettingController::class, 'index'])->name('setting');
 
 
 

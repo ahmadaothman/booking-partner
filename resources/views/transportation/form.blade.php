@@ -26,6 +26,18 @@
                 <p class="mb-30 font-14">Enter all required infomation</p>
             </div>
             <div class="wizard-content">
+                @if($user->balance <= 0)
+                <div class="alert alert-danger" role="alert">
+                    <strong>Warning:</strong> You Don't have balance please contact admin to add balance!
+                  </div>
+                <style>
+                    #main_form {
+                        pointer-events: none;
+                        opacity: 0.4;
+                    }
+                </style>
+                @endif
+
                 <form action="{{ $action }}" id="main_form" method="POST" enctype="multipart/form-data" class="tab-wizard wizard-circle wizard">
                     
                     @csrf

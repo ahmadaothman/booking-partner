@@ -21,7 +21,11 @@
         <div id="toprint" style="background-color: white !important">
             <table class="table table-sm mb-4 mt-2 table-bordered borderless">
                 <tbody>
-                   
+                    @if($user->logo)
+                   <tr class="text-right">
+                       <img src="{{ asset($user->logo) }}" style="max-height: 70px"/>
+                   </tr>
+                   @endif
                     <tr>
                         <td class="text-center align-middle" colspan="4"><strong>
                             

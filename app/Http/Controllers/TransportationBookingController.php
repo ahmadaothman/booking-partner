@@ -46,6 +46,8 @@ class TransportationBookingController extends Controller
             $data['action'] = route('addtransportationBooking',['id'=>$request->get('id')]);
         }
 
+        $data['user'] =  DB::table('users')->where('id', auth()->id())->first();
+        
         if($request->method() == 'POST'){
             $booking_data = [
                 'firstname'             =>  $request->input('firstname'),
@@ -241,6 +243,8 @@ class TransportationBookingController extends Controller
 
         $data['total'] = $vehicle_price->price + ($return_vehicle_price ? $return_vehicle_price->price : 0);
         $data['view'] = true;
+
+        $data['user'] =  DB::table('users')->where('id', auth()->id())->first();
 
         if( !empty($booking_data['trip_arrival_time'])){
             $data['airport_port_number'] = Setting::getSetting('airport_port_number') ? Setting::getSetting('airport_port_number')->setting_value : false;
