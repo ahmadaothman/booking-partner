@@ -166,7 +166,7 @@
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
-                            <td class="text-center align-middle"><h5>Port: <strong>{{ $airport_port_number }}</strong> Banner: <strong>{{ $airport_banner_number }}</strong> </h5></td>
+                            <td class="text-center align-middle"><h5>{{ $airport_port_number }} </h5></td>
                         </tr>
                     </tbody>
                 </table>
