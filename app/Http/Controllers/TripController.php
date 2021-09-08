@@ -20,6 +20,7 @@ class TripController extends Controller
         $trips = Trip::select('id','from_location')
         ->where('from_location','LIKE','%' . $request->get('query') . '%')
         ->where('from_location','!=',$request->get('to_location'))
+        ->where('status', true)
         ->skip(0)
         ->take(15)
         ->get()->unique('from_location');
@@ -30,6 +31,7 @@ class TripController extends Controller
         $trips = Trip::select('id','to_location')
         ->where('to_location','LIKE','%' . $request->get('query') . '%')
         ->where('to_location','!=',$request->get('from_location'))
+        ->where('status', true)
         ->skip(0)
         ->take(15)
         ->get()->unique('to_location');
@@ -47,6 +49,7 @@ class TripController extends Controller
         
             $trpi_vehicles = DB::table('trip_vehicle_pricing')
             ->join('vehicle','trip_vehicle_pricing.vehicle_id','=','vehicle.id')
+            ->where('vehicle.status',true)
             ->where('trip_vehicle_pricing.trip_id',$trip_id)->select('*')
             ->where('trip_vehicle_pricing.private_price','>',0)
             ->get();
@@ -80,6 +83,7 @@ class TripController extends Controller
         
             $trpi_vehicles = DB::table('trip_vehicle_pricing')
             ->join('vehicle','trip_vehicle_pricing.vehicle_id','=','vehicle.id')
+            ->where('vehicle.status',true)
             ->where('trip_vehicle_pricing.trip_id',$trip_id)->select('*')
             ->where('trip_vehicle_pricing.private_price','>',0)
             ->get();
@@ -101,8 +105,6 @@ class TripController extends Controller
             $data['return_is_airport'] = $trip->is_airport;
             $data['return_vehicles'] = $trpi_vehicles;
         }
-       
-        
         return $data;
     }
 
@@ -112,8 +114,13 @@ class TripController extends Controller
         
         foreach($request->input('selected_vehicles') as $id){
 
-            $trpi_vehicles = DB::table('trip_vehicle_pricing')->where('trip_id',$request->input('trip_id'))->where('vehicle_id',$id)->first();
-            $data['one_way_vehicle'] = DB::table('vehicle')->where('id',$trpi_vehicles->vehicle_id)->first();
+            $trpi_vehicles = DB::table('trip_vehicle_pricing')
+            ->where('trip_id',$request->input('trip_id'))
+            ->where('vehicle_id',$id)->first();
+
+            $data['one_way_vehicle'] = DB::table('vehicle')
+            ->where('id',$trpi_vehicles->vehicle_id)->first();
+
             $data['one_way_vehicle_price'] = $trpi_vehicles;
             
             $data['one_way_price'] = $trpi_vehicles->private_price;

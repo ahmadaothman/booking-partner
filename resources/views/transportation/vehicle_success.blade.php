@@ -162,14 +162,22 @@
                     @endforeach
                 </tbody>
             </table>
-            @if(!empty($booking_data['trip_arrival_time']))
+            @if(isset($booking_trip->airport_note) && !empty($booking_trip->airport_note))
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
-                            <td class="text-center align-middle"><h5>{{ $airport_port_number }} </h5></td>
+                            <td class="text-center align-middle"><h5>{{ $booking_trip->airport_note }} </h5></td>
                         </tr>
                     </tbody>
                 </table>
+            @elseif(isset($booking_return_trip->airport_note) && !empty($booking_return_trip->airport_note))
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="text-center align-middle"><h5>{{ $booking_return_trip->airport_note }} </h5></td>
+                    </tr>
+                </tbody>
+            </table>
             @endif
         </div>
     </div>

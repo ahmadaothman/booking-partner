@@ -196,6 +196,9 @@ class TransportationBookingController extends Controller
                 $data['airport_banner_number'] = Setting::getSetting('airport_banner_number') ? Setting::getSetting('airport_banner_number')->setting_value : false;    
             }
 
+            $data['booking_trip'] = DB::table('trip')->where('id',$booking_data['trip_id'])->first();
+            $data['booking_return_trip'] = DB::table('trip')->where('id',$booking_data['return_trip_id'])->first();
+
             return view('transportation.vehicle_success',$data);
         }
       
@@ -250,6 +253,9 @@ class TransportationBookingController extends Controller
             $data['airport_port_number'] = Setting::getSetting('airport_port_number') ? Setting::getSetting('airport_port_number')->setting_value : false;
             $data['airport_banner_number'] = Setting::getSetting('airport_banner_number') ? Setting::getSetting('airport_banner_number')->setting_value : false;    
         }
+
+        $data['booking_trip'] = DB::table('trip')->where('id',$booking_data->trip_id)->first();
+        $data['booking_return_trip'] = DB::table('trip')->where('id',$booking_data->return_trip_id)->first();
 
         return view('transportation.vehicle_success',$data);
     }
