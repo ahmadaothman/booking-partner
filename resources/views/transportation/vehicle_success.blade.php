@@ -50,7 +50,7 @@
                     </tr>
                     <tr>
                         <td>{{ $booking_data['firstname'] }} </td>
-                        <td><span>D.O.B: </span> {{ $booking_data['date_of_birthday'] }} </td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>{{ $booking_data['nationality'] }} -  {{ $booking_data['telephone'] }} </td>

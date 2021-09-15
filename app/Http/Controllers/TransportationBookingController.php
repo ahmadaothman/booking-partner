@@ -56,7 +56,7 @@ class TransportationBookingController extends Controller
                 'nationality'           =>  $request->input('nationality'),
                 'address'               =>  !empty($request->input('address')) ? $request->input('address') : 'No Address',
                 'sex'                   =>  'none',
-                'date_of_birthday'      =>  $request->input('date_of_birthday'),
+                'date_of_birthday'      =>  null,
                 'telephone'             =>  $request->input('telephone'),
                 'email'                 =>  $request->input('email'),
                 'passport_number'       =>  $request->input('passport_number'),
@@ -166,7 +166,7 @@ class TransportationBookingController extends Controller
             $data['firstname'] = $request->input('firstname');
             $data['middlename'] = $request->input('middlename');
             $data['lastname'] = $request->input('lastname');
-            $data['date_of_birthday'] = $request->input('date_of_birthday');
+            $data['date_of_birthday'] = null;
             $data['sex'] = 'none';
             $data['nationality'] = $request->input('nationality');
             $data['address'] = $request->input('address');

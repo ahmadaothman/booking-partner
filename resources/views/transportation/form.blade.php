@@ -282,7 +282,7 @@
                     <h5>Contact Info</h5>
                     <section>
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Full Name:</label>
                                     <input type="text" name="firstname" id="firstname" class="form-control personal-info" value="{{ isset($booking->firstname) ? $booking->firstname :  old('firstname') }}"/>
@@ -303,10 +303,10 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 d-none">
                                 <div class="form-group">
                                     <label>Date Of Birthday:</label>
-                                    <input type="date" name="date_of_birthday" name="date_of_birthday"  class="form-control  personal-info" value="{{ isset($booking->date_of_birthday) ? $booking->date_of_birthday :  old('date_of_birthday') }}">
+                                    <input type="date" name="date_of_birthday" name="date_of_birthday"  class="form-control " >
                                 </div>
                             </div>
                           
@@ -420,9 +420,9 @@
                                     <td id="table_email"></td>
                                 </tr>
                                 <tr id="table_airport_trip_info">
-                                    <td><strong>Trip Number:</strong></td>
+                                    <td><strong>Fly Number:</strong></td>
                                     <td id="table_trip_number"></td>
-                                    <td><strong>Arrival Time:</strong></td>
+                                    <td><strong>Fly Arrival Time:</strong></td>
                                     <td id="table_arrival_time"></td>
                                 </tr>
                             </tbody>
@@ -439,24 +439,45 @@
                                     <td><strong>To:</strong></td>
                                     <td id="table_one_way_to"></td>
                                 </tr>
-                               
-                                <tr id="table_return_trip_location">
+                                <tr>
+                                    <td colspan="4" class="text-center"><strong>Date-Time</strong></td>
+                                </tr>
+
+                                <tr>
+                                    <td><strong>Pickup Date:</strong></td>
+                                    <td id="table_pickup_date"></td>
+                                    <td><strong>Pickup Time:</strong></td>
+                                    <td id="table_pickup_time"></td>
+                                </tr>
+
+                                <tr class="table_return_trip_location">
+                                    <td colspan="4" class="text-center"><strong>Return</strong></td>
+                                </tr>
+                                <tr class="table_return_trip_location">
                                     <td><strong>From:</strong></td>
                                     <td id="table_return_from"></td>
                                     <td><strong>To:</strong></td>
                                     <td id="table_return_to"></td>
                                 </tr>
+
+                                <tr class="table_return_trip_vehicle_row ">
+                                    <td colspan="4" class="text-center"><strong>Date-Time</strong></td>
+                                </tr>
+                                <tr class="table_return_trip_vehicle_row ">
+                                    <td><strong>Return Date:</strong></td>
+                                    <td id="table_return_date"></td>
+                                    <td><strong>Return Time:</strong></td>
+                                    <td id="table_return_time"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-sm table-hover table-bordered">
+                            <tbody>
                                 <tr>
                                     <td><strong>Trip Vehicle:</strong></td>
                                     <td id="table_trip_vehicle"></td>
                                     <td><strong>Price:</strong></td>
                                     <td id="table_vehicle_price"></td>
-                                </tr>
-                                <tr id="table_return_trip_vehicle_row" class="d-none">
-                                    <td><strong>Trip Vehicle:</strong></td>
-                                    <td id="table_return_trip_vehicle"></td>
-                                    <td><strong>Price:</strong></td>
-                                    <td id="table_return_vehicle_price"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -730,18 +751,26 @@
                 $('#table_arrival_time').html($('#arrival_time').val());
                 if($('input[type=radio][name=trip_type]:checked','#main_form').val() == "round"){
                     $('#Trip_type').html('<strong>Round Trip</strong>')
-                    $('#table_return_trip_location').show();
-                    $('#table_return_trip_vehicle_row').show();
+                    $('.table_return_trip_location').show();
+                    $('.table_return_trip_vehicle_row').show();
                 }else{
-                    $('#Trip_type').html('<strong>One Way Trip</strong>')
-                    $('#table_return_trip_location').hide();
-                    $('#table_return_trip_vehicle_row').hide();
+                    $('#Trip_type').html('<strong>Trip Details</strong>')
+                    $('.table_return_trip_location').hide();
+                    $('.table_return_trip_vehicle_row').hide();
                 }
+
                 $('#table_one_way_from').html($('#pickup_location').val());
                 $('#table_one_way_to').html($('#destination_location').val());
 
+                $('#table_pickup_date').html($('#pickup_date').val());
+                $('#table_pickup_time').html($('#pickup_time').val());
+
                 $('#table_return_from').html($('#round_pickup_location').val());
                 $('#table_return_to').html($('#round_destination_location').val());
+
+                $('#table_return_date').html($('#return_date').val());
+                $('#table_return_time').html($('#return_time').val());
+
                 // calculate total
                 $.ajax({
                     type:"POST",
