@@ -13,6 +13,8 @@ use App\Http\Controllers\SettingController;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
 // Users
 Route::get('/transportation', [TransportationBookingController::class, 'bookingList'])->name('transportation_booking');
 Route::get('/transportation/add', [TransportationBookingController::class, 'bookingForm'])->name('addtransportationBooking');

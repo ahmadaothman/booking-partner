@@ -20,7 +20,7 @@
 						<span class="user-name">Balance:  {{ Auth::user()->balance }}$</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right">
-						<a class="dropdown-item" href="profile.php"><i class="fa fa-cog" aria-hidden="true"></i> Setting</a>
+						<a class="dropdown-item" href="/setting"><i class="fa fa-cog" aria-hidden="true"></i> Setting</a>
 						<a class="dropdown-item" href="{{ route('logout') }}"  onclick="event.preventDefault();
 						document.getElementById('logout-form').submit();">
 							<i class="fa fa-sign-out" aria-hidden="true"></i> Log Out

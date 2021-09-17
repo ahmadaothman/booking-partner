@@ -404,14 +404,10 @@
                                 <tr>
                                     <td><strong>Name:</strong></td>
                                     <td id="table_first_name"></td>
-                              
-                                </tr>
-                                <tr>
-                                    <td><strong>Date Of Birthdate:</strong></td>
-                                    <td id="table_date_of_birthday"></td>
                                     <td><strong>Nationality:</strong></td>
                                     <td id="table_nationality"></td>
                                 </tr>
+                            
                               
                                 <tr>
                                     <td><strong>Telephone:</strong></td>
@@ -493,15 +489,21 @@
                             <tbody id="table_pessengers_tbody">
                             </tbody>
                         </table>
+                        <table class="table table-sm table-bordered" id="table_airport_note">
+                            <tr>
+                                <td><strong>Note: </strong></td>
+                                <td class="text-center" id="table_airport_text"></td>
+                            </tr>
+                        </table>
 
                         <table class="table table-sm">
                             <tbody>
-                                <tr>
+                                <tr hidden>
                                     <td colspan="3"></td>
                                     <td><strong>One Way Price:</strong></td>
                                     <td id="table_one_way_price" class="text-right"></td>
                                 </tr>
-                                <tr>
+                                <tr hidden>
                                     <td colspan="3"></td>
                                     <td><strong>Return Trip Price:</strong></td>
                                     <td id="table_return_trip_price" class="text-right"></td>
@@ -714,7 +716,9 @@
                 })
                 
                 var pessenger_id = $('input[name="pessenger_admin"]:checked','#main_form').val()
-
+                if(pessenger_id == "" || pessenger_id == null){
+                    pessenger_id = 0;
+                }
                 var pessenger_name = $('input[name="pessenger['+pessenger_id+'][firstname]"]').val();
                 var pessenger_country = $('select[name="pessenger['+pessenger_id+'][nationality]"]').val();
 
@@ -793,6 +797,14 @@
                                 html += '</tr>'
                                 $('#table_pessengers_tbody').append(html)
                         });
+
+                        if(results.airport_note != "" && results.airport_note != null){
+                            $('#table_airport_note').show();
+                            $('#table_airport_text').html(results.airport_note);
+                        }else{
+                            $('#table_airport_note').hide();
+                            $('#table_airport_text').html("");
+                        }
 
                         $('#table_one_way_price').html(results.one_way_price + "$")
                         $('#table_return_trip_price').html(results.one_way_price + "$")

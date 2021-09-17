@@ -1,6 +1,9 @@
 @extends('index')
 @section('content')
 <div class="pd-ltr-20 xs-pd-20-10 bg-white">
+    @if ($trip_not_found)
+        <h3 class="text-danger text-center">Warning: Trip not found!</h3>
+    @else
     <div class="min-height-200px pb-4" style="background-color: white !important">
 
         @if (isset($view) && !$view)
@@ -170,7 +173,7 @@
                         </tr>
                     </tbody>
                 </table>
-            @elseif(isset($booking_return_trip->airport_note) && !empty($booking_return_trip->airport_note))
+            @elseif(isset($booking_return_trip->airport_note) && !empty($booking_return_trip->airport_note) && $booking_data['trip_type'] != 'one_way')
             <table class="table table-bordered">
                 <tbody>
                     <tr>
@@ -187,4 +190,5 @@
     border: none;
 }
 </style>
+@endif
 @endsection

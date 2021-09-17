@@ -127,7 +127,10 @@ class TripController extends Controller
             $total = $total + $trpi_vehicles->private_price;
         }
 
-       
+        $trip = $trpi_vehicles = DB::table('trip')
+        ->where('id',$request->input('trip_id'))->first();
+
+       $data['airport_note'] = $trip->airport_note;
 
         $data['pessengers'] = $request->input('pessenger');
 

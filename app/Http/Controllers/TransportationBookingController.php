@@ -27,7 +27,7 @@ class TransportationBookingController extends Controller
         if($request->get('filter_trip_type')){
             $bookings->where('trip_type',$request->get('filter_trip_type'));
         }
-        $data['bookings'] = $bookings->paginate(15);
+        $data['bookings'] = $bookings->paginate(50);
 
         return view('transportation.list',$data);
     } 
@@ -197,6 +197,7 @@ class TransportationBookingController extends Controller
             }
 
             $data['booking_trip'] = DB::table('trip')->where('id',$booking_data['trip_id'])->first();
+
             $data['booking_return_trip'] = DB::table('trip')->where('id',$booking_data['return_trip_id'])->first();
 
             return view('transportation.vehicle_success',$data);
@@ -216,6 +217,11 @@ class TransportationBookingController extends Controller
         $booking_data = Booking::where('id',$request->get('id'))
 
         ->where('agent_id',auth()->id())->first();
+        if(!$booking_data){
+          $data['trip_not_found'] = true;
+          return view('transportation.vehicle_success',$data);
+
+        }
         $data['booking_data'] = $booking_data;
         $data['booking_number'] = $booking_data->id;
         $data['from']   = $booking_data->Trip->from_location;
@@ -255,6 +261,7 @@ class TransportationBookingController extends Controller
         }
 
         $data['booking_trip'] = DB::table('trip')->where('id',$booking_data->trip_id)->first();
+      
         $data['booking_return_trip'] = DB::table('trip')->where('id',$booking_data->return_trip_id)->first();
 
         return view('transportation.vehicle_success',$data);
