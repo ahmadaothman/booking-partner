@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Setting;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class SettingController extends Controller
 {
@@ -44,6 +45,11 @@ class SettingController extends Controller
                
                 DB::table('users')->where('id', auth()->id())->update(['logo'=>'images/' . $new_name]);
             }
+
+            if($request->input('password') != ""){
+                DB::table('users')->where('id', auth()->id())->update(['password'=>Hash::make($request->input('password'))]);
+            }
+
             return redirect('setting');
         }
        
