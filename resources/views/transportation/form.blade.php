@@ -550,6 +550,8 @@
 <script>
     var is_airport = false
     var final_total = 0;
+    var trip_type = "one_way";
+
     $(".tab-wizard").steps({
         headerTag: "h5",
         bodyTag: "section",
@@ -561,6 +563,8 @@
         onStepChanging:function(event, currentIndex, priorIndex){
 
             if(currentIndex == 0){
+                trip_type = $('input[type=radio][name=trip_type]:checked','#main_form').val();
+           
                 $('#round_pickup_location').val($('#destination_location').val())
                 $('#round_destination_location').val($('#pickup_location').val())
                 if($('#pickup_location').val() == "" || $('#destination_location').val() == "" || $('#pickup_date').val() == ""){
@@ -624,7 +628,11 @@
                                     html += '</td>'
 
                                     html += '<td class="text-center align-middle">'
-                                    html += value.private_price + "$"
+                                    if(trip_type == "round"){
+                                        html += value.private_price*2 + "$"
+                                    }else{
+                                        html += value.private_price + "$"
+                                    }
                                     html += '<input type="hidden" name="vehivles_price['+value.vehicle_id+'][price]" value="'+value.private_price+'" />'
                                     html += '</td>'
 
@@ -790,7 +798,11 @@
                     data:$('#main_form').serialize(),
                     success:function(results){
                         $('#table_trip_vehicle').html(results.one_way_vehicle.name + "-" + results.one_way_vehicle.description)
-                        $('#table_vehicle_price').html(results.one_way_vehicle_price.private_price + "$" )
+                        if(trip_type == "round"){
+                            $('#table_vehicle_price').html(results.one_way_vehicle_price.private_price*2 + "$" )
+                        }else{
+                            $('#table_vehicle_price').html(results.one_way_vehicle_price.private_price + "$" )
+                        }
 
                         if(results.return_trip_vehicle){
                             $('#table_return_trip_vehicle').html(results.return_trip_vehicle.name + "-" + results.return_trip_vehicle.description)
