@@ -1,7 +1,7 @@
 @extends('index')
 @section('content')
 <div class="pd-ltr-20 xs-pd-20-10 bg-white">
-    @if ($trip_not_found)
+    @if (isset($trip_not_found) && $trip_not_found)
         <h3 class="text-danger text-center">Warning: Trip not found!</h3>
     @else
     <div class="min-height-200px pb-4" style="background-color: white !important">

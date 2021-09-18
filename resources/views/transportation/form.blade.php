@@ -436,6 +436,10 @@
                                     <td id="table_one_way_to"></td>
                                 </tr>
                                 <tr>
+                                    <td colspan="2" id="table_pickup_location_address"></td>
+                                    <td colspan="2" id="table_dropoff_location_address"></td>
+                                </tr>
+                                <tr>
                                     <td colspan="4" class="text-center"><strong>Date-Time</strong></td>
                                 </tr>
 
@@ -455,6 +459,7 @@
                                     <td><strong>To:</strong></td>
                                     <td id="table_return_to"></td>
                                 </tr>
+                               
 
                                 <tr class="table_return_trip_vehicle_row ">
                                     <td colspan="4" class="text-center"><strong>Date-Time</strong></td>
@@ -765,6 +770,9 @@
 
                 $('#table_one_way_from').html($('#pickup_location').val());
                 $('#table_one_way_to').html($('#destination_location').val());
+
+                $('#table_pickup_location_address').html($('#one_way_pickup_note').val());
+                $('#table_dropoff_location_address').html($('#one_way_dropoff_note').val());
 
                 $('#table_pickup_date').html($('#pickup_date').val());
                 $('#table_pickup_time').html($('#pickup_time').val());
