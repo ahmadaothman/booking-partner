@@ -42,7 +42,10 @@ class TripController extends Controller
         $data = array();
 
         // one way trip
-        $trip = Trip::where('from_location',$request->get('from_location'))->where('to_location',$request->get('to_location'))->first();
+        $trip = Trip::where('from_location',$request->get('from_location'))
+        ->where('to_location',$request->get('to_location'))
+        ->where('status',1)
+        ->first();
        
         if($trip){
             $trip_id = $trip->id;
@@ -76,6 +79,7 @@ class TripController extends Controller
         // return trip
         $trip = Trip::where('from_location',$request->get('round_from_location'))
         ->where('to_location',$request->get('round_to_location'))
+        ->where('status',1)
         ->first();
 
         if($trip){
