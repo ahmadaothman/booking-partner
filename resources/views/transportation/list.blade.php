@@ -145,11 +145,11 @@
                           <td class="align-middle">{{ $booking->booking_date }}</td>
                           <td class="py-3 px-2 text-center align-midlle" style="font-size: 14px !important;">
                           @if ($booking->status == 1)
-                          <span class="bg-warning p-2 text-white rounded">Approved</span>
+                          <span class="bg-success p-2 text-white rounded">Approved</span>
                           @elseif($booking->status == 2)
                           <span class="bg-danger p-2 text-white rounded">Cancelled</span>
                           @elseif($booking->status == 3)
-                          <span class="bg-success p-2 text-white rounded">Completed</span>
+                          <span class="bg-warning p-2 text-white rounded">Completed</span>
                           @endif
                           </td>
                           <td class="align-middle" >
