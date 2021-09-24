@@ -200,7 +200,9 @@ class TransportationBookingController extends Controller
 
             $data['booking_return_trip'] = DB::table('trip')->where('id',$booking_data['return_trip_id'])->first();
 
-            return view('transportation.vehicle_success',$data);
+               return redirect('/transportation/view?id='.$booking_id);
+
+           // return view('transportation.vehicle_success',$data);
         }
       
         $data['image_server'] = 'https://admin.pearltours.com.tr';
