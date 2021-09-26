@@ -368,7 +368,7 @@
                                 <input type="text" name="trip_number" id="trip_number"  class="form-control" value="{{ isset($booking->trip_number) ? $booking->trip_number :  old('trip_number') }}">
                             </div>
                         </div>
-                        <div class="col-md-6 ">
+                        <div class="col-md-6 d-none">
                             <div class="form-group"  >
                                 <label>Arrival Time:</label>
                                 <input type="text" name="arrival_time" id="arrival_time"  class="form-control time-picker-default" value="{{ isset($booking->arrival_time) ? $booking->arrival_time :  old('arrival_time') }}">
@@ -417,9 +417,8 @@
                                 </tr>
                                 <tr id="table_airport_trip_info">
                                     <td><strong>Fly Number:</strong></td>
-                                    <td id="table_trip_number"></td>
-                                    <td><strong>Fly Arrival Time:</strong></td>
-                                    <td id="table_arrival_time"></td>
+                                    <td id="table_trip_number" colspan="2"></td>
+                                  
                                 </tr>
                             </tbody>
                         </table>
@@ -436,8 +435,10 @@
                                     <td id="table_one_way_to"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" id="table_pickup_location_address"></td>
-                                    <td colspan="2" id="table_dropoff_location_address"></td>
+                                    <td><strong>Pickup Location Address :</strong></td>
+                                    <td   id="table_pickup_location_address"></td>
+                                    <td><strong>Drop Off Location Address :</strong></td>
+                                    <td  id="table_dropoff_location_address"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="text-center"><strong>Date-Time</strong></td>
@@ -450,16 +451,28 @@
                                     <td id="table_pickup_time"></td>
                                 </tr>
 
+                             
+                               
+                            </tbody>
+                        </table>
+                        <table class="table table-sm table-hover table-bordered table_return_trip_location">
+                            <tbody>
                                 <tr class="table_return_trip_location">
                                     <td colspan="4" class="text-center"><strong>Return</strong></td>
                                 </tr>
+
                                 <tr class="table_return_trip_location">
                                     <td><strong>From:</strong></td>
                                     <td id="table_return_from"></td>
                                     <td><strong>To:</strong></td>
                                     <td id="table_return_to"></td>
                                 </tr>
-                               
+                               <tr  class="table_return_trip_location">
+                                <td><strong>Pickup Location Address :</strong></td>
+                                <td   id="table_pickup_return_location_address"></td>
+                                <td><strong>Drop Off Location Address :</strong></td>
+                                <td  id="table_dropoff_return_location_address"></td>
+                               </tr>
 
                                 <tr class="table_return_trip_vehicle_row ">
                                     <td colspan="4" class="text-center"><strong>Date-Time</strong></td>
@@ -779,8 +792,11 @@
                 $('#table_one_way_from').html($('#pickup_location').val());
                 $('#table_one_way_to').html($('#destination_location').val());
 
-                $('#table_pickup_location_address').html($('#one_way_pickup_note').val());
+                $('#table_pickup_location_address').html( $('#one_way_pickup_note').val());
                 $('#table_dropoff_location_address').html($('#one_way_dropoff_note').val());
+
+                $('#table_pickup_return_location_address').html( $('#one_way_dropoff_note').val());
+                $('#table_dropoff_return_location_address').html($('#one_way_pickup_note').val());
 
                 $('#table_pickup_date').html($('#pickup_date').val());
                 $('#table_pickup_time').html($('#pickup_time').val());

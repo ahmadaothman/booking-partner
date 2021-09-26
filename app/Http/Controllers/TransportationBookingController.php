@@ -8,6 +8,7 @@ use PragmaRX\Countries\Package\Countries;
 use App\Models\Booking;
 use App\Models\Vehicle;
 use App\Models\Setting;
+use App\Models\Trip;
 
 use Illuminate\Support\Facades\DB;
 
@@ -27,6 +28,25 @@ class TransportationBookingController extends Controller
         if($request->get('filter_trip_type')){
             $bookings->where('trip_type',$request->get('filter_trip_type'));
         }
+
+        if($request->get('filter_from')){
+            $trip_ids = Trip::where('from_location',$request->get('filter_from'))->pluck('id')->toArray();
+
+            $bookings->whereIn('trip_id',$trip_ids);
+        }
+
+        if($request->get('filter_to')){
+            $trip_ids = Trip::where('to_location',$request->get('filter_to'))->pluck('id')->toArray();
+
+            $bookings->whereIn('trip_id',$trip_ids);
+        }
+
+        if($request->get('filter_date') != null){
+            $dates = explode(" - ", $request->get('filter_date')); 
+       
+            $bookings->whereBetween('booking_date',array($dates[0],$dates[1]));
+        }
+
         $data['bookings'] = $bookings->paginate(50);
 
         return view('transportation.list',$data);
@@ -84,6 +104,17 @@ class TransportationBookingController extends Controller
 
             $booking_id = Booking::insertGetId($booking_data);
 
+            $user = auth()->user();
+
+            $to = "res@pearltours.com.tr";
+            $subject = "New trip booking";
+            $txt = "New trip booking added from " . $user->name . "\r\n";
+            $txt = $txt . "Booking Number: " . $booking_id . "\r\n";
+            $txt = $txt . "Booking Date: " . $request->input('pickup_date');
+            $headers = "From: res@pearltours.com.tr" . "\r\n";
+        
+            mail($to,$subject,$txt,$headers);
+
             if($request->input('pessenger')){
          
                 foreach($request->input('pessenger') as $key => $pessenger){
@@ -107,18 +138,22 @@ class TransportationBookingController extends Controller
             foreach($request->input('vehivles_price') as $key => $value){
             
                if($key == $request->input('selected_vehicles')[0]){
+
                 $vehilcle_data = [
                     'vehicle_id'    =>  $key,
                     'price'         =>  $request->input('vehivles_price')[$key]['price'],
                     'booking_id'    =>  $booking_id,
                     'trip_type'     =>  'one_way',
                 ];
+
                 $vehicles['one_way']['price'] = $vehilcle_data['price'];
                 $vehicles['one_way']['vehicle'] = DB::table('vehicle')->where('id',$key)->first();
                 $total = $total + $request->input('vehivles_price')[$key]['price'];
                 DB::table('booking_vehicles')->insert($vehilcle_data);
+
                }
             }
+            
             // return vehicles
             if($request->input('vehivles_price') && $request->input('trip_type') != "one_way"){
                
