@@ -364,7 +364,7 @@
                        <div class="row is_airport" id="block_trip_number">
                         <div class="col-md-6 ">
                             <div class="form-group"  >
-                                <label>Fly Number:</label>
+                                <label>Flight Number:</label>
                                 <input type="text" name="trip_number" id="trip_number"  class="form-control" value="{{ isset($booking->trip_number) ? $booking->trip_number :  old('trip_number') }}">
                             </div>
                         </div>
@@ -416,7 +416,7 @@
                                     <td id="table_email"></td>
                                 </tr>
                                 <tr id="table_airport_trip_info">
-                                    <td><strong>Fly Number:</strong></td>
+                                    <td><strong>Flight Number:</strong></td>
                                     <td id="table_trip_number" colspan="2"></td>
                                   
                                 </tr>

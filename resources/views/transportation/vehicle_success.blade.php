@@ -69,7 +69,12 @@
                     </tr>
                     <tr>
                         <td>From:</td>
-                        <td>{{ $from }}</td>
+                        <td>{{ $from }} 
+                            @if ($booking_data->trip_number_main)
+                            <strong>Flight Number:  {{ $booking_data->trip_number_main  }}
+                            </strong>
+                            @endif
+                        </td>
                         <td>To:</td>
                         <td>{{ $to }}</td>
                     </tr>
