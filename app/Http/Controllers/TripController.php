@@ -108,6 +108,10 @@ class TripController extends Controller
             $data['return_trip_id'] = $trip->id;
             $data['return_is_airport'] = $trip->is_airport;
             $data['return_vehicles'] = $trpi_vehicles;
+
+            if(!$data['is_airport'] && $request->get('trip_type') == 'round'){
+                $data['is_airport'] = $trip->is_airport;
+            }
         }
         return $data;
     }

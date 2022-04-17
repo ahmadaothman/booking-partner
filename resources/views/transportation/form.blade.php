@@ -605,7 +605,8 @@
                             to_location:$('#destination_location').val(),
                             round_from_location: $('#round_pickup_location').val(),
                             round_to_location:$('#round_destination_location').val(),
-                            perssengers:$('#perssengers').val()
+                            perssengers:$('#perssengers').val(),
+                            trip_type:$('input[name="trip_type"]:checked').val()
                         },
                         success:function(data){
                             $('#available_vehicles_tbody').empty()

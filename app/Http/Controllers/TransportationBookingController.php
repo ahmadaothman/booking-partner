@@ -11,6 +11,7 @@ use App\Models\Setting;
 use App\Models\Trip;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class TransportationBookingController extends Controller
 {
@@ -103,6 +104,8 @@ class TransportationBookingController extends Controller
             $data['booking_data'] = $booking_data;
 
             $booking_id = Booking::insertGetId($booking_data);
+
+         
 
             $user = auth()->user();
 
@@ -234,13 +237,14 @@ class TransportationBookingController extends Controller
             $data['booking_trip'] = DB::table('trip')->where('id',$booking_data['trip_id'])->first();
 
             $data['booking_return_trip'] = DB::table('trip')->where('id',$booking_data['return_trip_id'])->first();
-
-               return redirect('/transportation/view?id='.$booking_id);
+            $this->emailBooking($booking_id);
+            return redirect('/transportation/view?id='.$booking_id);
 
            // return view('transportation.vehicle_success',$data);
         }
       
         $data['image_server'] = 'https://admin.pearltours.com.tr';
+       
         return view('transportation.form',$data);
     }
 
@@ -300,6 +304,74 @@ class TransportationBookingController extends Controller
         $data['booking_trip'] = DB::table('trip')->where('id',$booking_data->trip_id)->first();
       
         $data['booking_return_trip'] = DB::table('trip')->where('id',$booking_data->return_trip_id)->first();
+
+        return view('transportation.vehicle_success',$data);
+    }
+
+    public function emailBooking($id){
+        $data = array();
+
+        $booking_data = Booking::where('id', $id)
+
+        ->where('agent_id',auth()->id())->first();
+        
+        if(!$booking_data){
+          $data['trip_not_found'] = true;
+          return view('transportation.vehicle_success',$data);
+        }
+
+        $data['booking_data'] = $booking_data;
+        $data['booking_number'] = $booking_data->id;
+        $data['from']   = $booking_data->Trip->from_location;
+        $data['to']   = $booking_data->Trip->to_location;
+        $data['pickup_date'] = $booking_data->booking_date;
+        $data['pickup_time'] = $booking_data->one_way_time;
+
+        $data['return_from']   = isset($booking_data->RoundTrip->from_location ) ? $booking_data->RoundTrip->from_location : '';
+        $data['return_to']   = isset($booking_data->RoundTrip->to_location) ? $booking_data->RoundTrip->to_location : '';
+        $data['return_date'] = $booking_data->return_date;
+        $data['return_time'] = $booking_data->return_time;
+
+        $vehicle_price = $booking_data->Vehicle;
+        $return_vehicle_price = $booking_data->ReturnVehicle;
+
+        $vehicle = Vehicle::where('id',$vehicle_price->vehicle_id)->first();
+        
+        if($return_vehicle_price){
+            $return_vehicle = Vehicle::where('id',$return_vehicle_price->vehicle_id)->first();
+          
+            $data['round_vehicle'] = $return_vehicle->name . " - " . $return_vehicle->description . " Max people " . $return_vehicle->max_people;
+            $data['round_vehicle_price'] = $return_vehicle_price->price;
+        }
+
+        $data['one_way_vehicle'] = $vehicle->name . " - " . $vehicle->description . " Max people " . $vehicle->max_people;
+        $data['one_way_vehicle_price'] = $vehicle_price->price;
+        $data['pessengers'] = $booking_data->GetPessengers;
+
+        $data['total'] = $vehicle_price->price + ($return_vehicle_price ? $return_vehicle_price->price : 0);
+        $data['view'] = true;
+
+        $data['user'] =  DB::table('users')->where('id', auth()->id())->first();
+
+        if( !empty($booking_data['trip_arrival_time'])){
+            $data['airport_port_number'] = Setting::getSetting('airport_port_number') ? Setting::getSetting('airport_port_number')->setting_value : false;
+            $data['airport_banner_number'] = Setting::getSetting('airport_banner_number') ? Setting::getSetting('airport_banner_number')->setting_value : false;    
+        }
+
+        $data['booking_trip'] = DB::table('trip')->where('id',$booking_data->trip_id)->first();
+      
+        $data['booking_return_trip'] = DB::table('trip')->where('id',$booking_data->return_trip_id)->first();
+
+        $user = auth()->user();
+
+        $data['username'] = $user->name;
+        $data['useremail'] = $user->email;
+
+        Mail::send('transportation.vehicle_success', $data, function (\Illuminate\Mail\Message $message) use ($data)
+        {
+            $message->to($data['useremail'], $data['username']);
+            $message->subject('Reservation Completed');
+        });
 
         return view('transportation.vehicle_success',$data);
     }
