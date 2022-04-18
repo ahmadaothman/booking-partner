@@ -82,6 +82,7 @@ class TransportationBookingController extends Controller
                 'email'                 =>  $request->input('email'),
                 'passport_number'       =>  $request->input('passport_number'),
                 'trip_number_main'      =>  $request->input('trip_number'),
+                'return_trip_number_main'=>  $request->input('return_trip_number'),
                 'trip_arrival_time'     =>  date("G:i", strtotime($request->input('arrival_time'))),
                 'number_of_people'      =>  $request->input('perssengers'),
                 'booking_date'          =>  $request->input('pickup_date'),

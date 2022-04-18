@@ -368,6 +368,14 @@
                                 <input type="text" name="trip_number" id="trip_number"  class="form-control" value="{{ isset($booking->trip_number) ? $booking->trip_number :  old('trip_number') }}">
                             </div>
                         </div>
+                        
+                        <div class="col-md-6 ">
+                            <div class="form-group"  >
+                                <label id="return_trip_number_text">Return Flight Number:</label>
+                                <input type="text" name="return_trip_number" id="return_trip_number"  class="form-control" >
+                            </div>
+                        </div>
+
                         <div class="col-md-6 d-none">
                             <div class="form-group"  >
                                 <label>Arrival Time:</label>
@@ -415,11 +423,7 @@
                                     <td><strong>Email:</strong></td>
                                     <td id="table_email"></td>
                                 </tr>
-                                <tr id="table_airport_trip_info">
-                                    <td><strong>Flight Number:</strong></td>
-                                    <td id="table_trip_number" colspan="2"></td>
-                                  
-                                </tr>
+                                
                             </tbody>
                         </table>
                         <!--Vehicles And Locations-->
@@ -450,7 +454,10 @@
                                     <td><strong>Pickup Time:</strong></td>
                                     <td id="table_pickup_time"></td>
                                 </tr>
-
+                                <tr id="table_airport_trip_info">
+                                    <td><strong>Flight Number:</strong></td>
+                                    <td id="table_trip_number" colspan="3"></td>
+                                </tr>
                              
                                
                             </tbody>
@@ -482,6 +489,10 @@
                                     <td id="table_return_date"></td>
                                     <td><strong>Return Time:</strong></td>
                                     <td id="table_return_time"></td>
+                                </tr>
+                                <tr id="table_airport_return_trip_info">
+                                    <td><strong>Return Flight Number:</strong></td>
+                                    <td id="table_return_trip_number" colspan="3"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -717,9 +728,20 @@
                     if(is_airport){
                         $('#block_trip_number').show()
                         $('#trip_number').addClass('personal-info')
+                        
+                        if($('input[name="trip_type"]:checked').val() == 'round'){
+                            $('#return_trip_number').show()
+                            $('#return_trip_number').addClass('personal-info')
+                            $('#return_trip_number_text').show();
+                        }else{
+                            $('#return_trip_number').hide()
+                            $('#return_trip_number_text').hide();
+                            $('#return_trip_number').removeClass('personal-info')
+                        }
                     }else{
                         $('#block_trip_number').hide()
                         $('#trip_number').removeClass('personal-info')
+                        $('#return_trip_number').removeClass('personal-info')
                     }
                     $('#main_form .personal-info').each(function(){
                         $(this).removeClass('is-invalid')
@@ -780,10 +802,18 @@
 
                 $('#table_trip_number').html($('#trip_number').val());
                 $('#table_arrival_time').html($('#arrival_time').val());
+
                 if($('input[type=radio][name=trip_type]:checked','#main_form').val() == "round"){
                     $('#Trip_type').html('<strong>Round Trip</strong>')
                     $('.table_return_trip_location').show();
                     $('.table_return_trip_vehicle_row').show();
+
+                    if($('#return_trip_number').val() != ''){
+                        $('#table_airport_return_trip_info').show();
+                        $('#table_return_trip_number').html($('#return_trip_number').val())
+                    }else{
+                        $('#table_airport_return_trip_info').hide();
+                    }
                 }else{
                     $('#Trip_type').html('<strong>Trip Details</strong>')
                     $('.table_return_trip_location').hide();

@@ -95,6 +95,16 @@
                             {{ $booking_data['one_way_dropoff_note'] }}
                         </td>
                     </tr>
+
+                    @if ($booking_data->trip_number_main)
+                    <tr class="table table-bordered">
+                        <td>
+                            Flight Number: 
+                        </td>
+                        <td colspan="3"> {{ $booking_data->trip_number_main  }}</td>
+                    </tr>
+                     @endif
+
                 </tbody>
             </table>
             @if($booking_data['trip_type'] != 'one_way')
@@ -131,17 +141,19 @@
                                 {{ $booking_data['one_way_pickup_note'] }}
                             </td>
                         </tr>
+                        @if ($booking_data->return_trip_number_main)
+                        <tr class="table table-bordered">
+                            <td>
+                                Return Flight Number: 
+                            </td>
+                            <td colspan="3"> {{ $booking_data->return_trip_number_main  }}</td>
+                        </tr>
+                         @endif
                     </tbody>
                 </table>
             @endif
 
-            @if ($booking_data->trip_number_main)
-                <table class="table table-bordered">
-                    <td>
-                        <strong>Flight Number:  {{ $booking_data->trip_number_main  }}</strong>
-                    </td>
-                </table>
-            @endif
+          
 
             <table class="table table-sm  table-bordered ">
                 <tbody>
