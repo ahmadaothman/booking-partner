@@ -368,7 +368,7 @@ class TransportationBookingController extends Controller
         $data['username'] = $user->name;
         $data['useremail'] = $user->email;
 
-        Mail::send('transportation.vehicle_success_email', $data, function (\Illuminate\Mail\Message $message) use ($data)
+        Mail::send(['html'=>'transportation.vehicle_success_email'], $data, function (\Illuminate\Mail\Message $message) use ($data)
         {
             $message->to($data['useremail'], $data['username']);
             $message->subject('Your Reservation Completed');
