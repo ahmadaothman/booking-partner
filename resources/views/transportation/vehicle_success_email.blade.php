@@ -16,11 +16,7 @@
         </table>
         @endif
         <script type="text/javascript" src="{{ asset('/src/scripts/printThis.js') }}"></script>
-       <div class="row">
-           <div  class="col-md-12 text-right">
-            <button type="button" class="btn btn-primary" onclick="$('#toprint').printThis();"><i class="icon-copy fa fa-print" aria-hidden="true"></i> Print</button>
-           </div>
-       </div>
+       
         <div id="toprint" style="background-color: white !important">
             <table class="table table-sm mb-4 mt-2 table-bordered borderless">
                 <tbody>
@@ -211,6 +207,12 @@
 <style>
     .borderless td, .borderless th {
     border: none;
+}
+.header.clearfix, .left-side-bar{
+    display: none !important;
+}
+.main-container{
+    padding: 0px !important;
 }
 </style>
 @endif
